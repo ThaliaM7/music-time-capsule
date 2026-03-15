@@ -193,16 +193,18 @@ function ReceiverView({ slots }) {
 
     audioRefs.current.forEach((audio, i) => {
       if (!audio) return;
+      let vol = 0;
       if (i === era) {
-        let vol = 1;
+        vol = 1;
         if (era === 2) { const s = Math.max(0, 1 - 3 / dur); if (p > s) vol = 1 - (p - s) / (3 / dur); }
         else if (inFade) vol = 1 - fadePct;
-        audio.volume = Math.max(0, vol);
       } else if (i === era + 1) {
-        audio.volume = Math.max(0, inFade ? fadePct : 0);
-      } else {
-        audio.volume = 0;
+        vol = inFade ? fadePct : 0;
       }
+      
+      audio.volume = Math.max(0, vol);
+      // MOBILE FIX: Force mute if volume is 0
+      audio.muted = audio.volume <= 0;
     });
 
     fadeRef.current = requestAnimationFrame(tick);
@@ -210,22 +212,29 @@ function ReceiverView({ slots }) {
 
   function togglePlay() {
     if (!playing) {
-      // MOBILE FIX: Explicitly play all tracks at 0 volume to unlock them
-      audioRefs.current.forEach((a) => {
+      // MOBILE FIX: Unlock all tracks and force mute all but the first
+      audioRefs.current.forEach((a, i) => {
         if (a) {
-          a.volume = 0;
+          a.muted = i !== 0;
+          a.volume = i === 0 ? 1 : 0;
           a.play().catch(e => console.log("Unlock failed", e));
         }
       });
-      
       eraRef.current = 0; 
       setCurrentEra(0);
       startTimeRef.current = performance.now();
       setPlaying(true);
       fadeRef.current = requestAnimationFrame(tick);
     } else {
+      // KEEP THIS: It stops the music and resets everything
       cancelAnimationFrame(fadeRef.current);
-      audioRefs.current.forEach((a) => { if (a) { a.pause(); a.currentTime = 0; a.volume = 0; } });
+      audioRefs.current.forEach((a) => { 
+        if (a) { 
+          a.pause(); 
+          a.currentTime = 0; 
+          a.volume = 0; 
+        } 
+      });
       setPlaying(false); 
       setCurrentEra(0); 
       setProgress(0);
@@ -420,6 +429,8 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
       }
 
       audio.volume = Math.max(0, Math.min(1, vol)) * baseVol;
+      // MOBILE FIX: Force mute if final volume is 0
+      audio.muted = audio.volume <= 0;
     });
 
     fadeRef.current = requestAnimationFrame(tick);
@@ -429,16 +440,20 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
     eraRef.current = 0;
     scratchFiredRef.current = false;
     setCurrentEra(0);
+    
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
-    // MOBILE FIX: "Unlock" all audio tracks immediately on the user click
-    for (const audio of audioRefs.current) {
+    // MOBILE FIX: Explicitly mute and play all tracks to "unlock" them
+    for (let i = 0; i < audioRefs.current.length; i++) {
+      const audio = audioRefs.current[i];
       if (audio) {
-        audio.volume = 0; // Ensure they start silent
-        try {
-          await audio.play();
-          // We don't pause immediately; we let the tick() function 
-          // take over the volume control.
-        } catch(e) { console.warn("Play failed:", e); }
+        audio.muted = i !== 0; // Only the first track is unmuted
+        audio.volume = i === 0 ? (volumesRef.current[0] || 0.8) : 0;
+        try { 
+          await audio.play(); 
+        } catch(e) { 
+          console.warn("Play failed:", e); 
+        }
       }
     }
 
