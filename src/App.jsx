@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
-const DEEZER_PROXY = "https://corsproxy.io/?url=";
+const DEEZER_PROXY = "/deezer-api";
 
 const GENRE_CHIPS = [
   { label: "Pop", query: "pop" },
@@ -57,8 +57,10 @@ function buildDeezerUrl(year, query) {
 }
 
 async function fetchSongsForYear(year, query) {
-  const deezerUrl = buildDeezerUrl(year, query);
-  const proxyUrl = DEEZER_PROXY + encodeURIComponent(deezerUrl);
+  const q = year && query ? `${query} year:${year}` : year ? `year:${year}` : query;
+  // This points to your vercel.json rewrite
+  const proxyUrl = `${DEEZER_PROXY}/search?q=${encodeURIComponent(q)}&order=RANKING`;
+  
   const res = await fetch(proxyUrl);
   const data = await res.json();
   if (!data.data || data.data.length === 0) return [];
