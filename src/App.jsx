@@ -210,15 +210,25 @@ function ReceiverView({ slots }) {
 
   function togglePlay() {
     if (!playing) {
-      audioRefs.current.forEach((a) => a?.play());
-      eraRef.current = 0; setCurrentEra(0);
+      // MOBILE FIX: Explicitly play all tracks at 0 volume to unlock them
+      audioRefs.current.forEach((a) => {
+        if (a) {
+          a.volume = 0;
+          a.play().catch(e => console.log("Unlock failed", e));
+        }
+      });
+      
+      eraRef.current = 0; 
+      setCurrentEra(0);
       startTimeRef.current = performance.now();
       setPlaying(true);
       fadeRef.current = requestAnimationFrame(tick);
     } else {
       cancelAnimationFrame(fadeRef.current);
       audioRefs.current.forEach((a) => { if (a) { a.pause(); a.currentTime = 0; a.volume = 0; } });
-      setPlaying(false); setCurrentEra(0); setProgress(0);
+      setPlaying(false); 
+      setCurrentEra(0); 
+      setProgress(0);
     }
   }
 
@@ -419,16 +429,19 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
     eraRef.current = 0;
     scratchFiredRef.current = false;
     setCurrentEra(0);
-    // Play each audio element, ignore individual failures
-    // Wait for all audio to be ready
-    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    // MOBILE FIX: "Unlock" all audio tracks immediately on the user click
     for (const audio of audioRefs.current) {
       if (audio) {
-        try { await audio.play(); } catch(e) { console.warn("Play failed:", e); }
+        audio.volume = 0; // Ensure they start silent
+        try {
+          await audio.play();
+          // We don't pause immediately; we let the tick() function 
+          // take over the volume control.
+        } catch(e) { console.warn("Play failed:", e); }
       }
     }
-    // Set all volumes to 0 initially — tick will control them
-    audioRefs.current.forEach((a) => { if (a) a.volume = 0; });
+
     startTimeRef.current = performance.now();
     setPlaying(true);
     cancelAnimationFrame(fadeRef.current);
