@@ -110,9 +110,9 @@ function ShareCard({ slots, userName, theme }) {
 
   async function loadImageAsBlob(url) {
     const proxies = [
+      "https://images.weserv.nl/?url=" + encodeURIComponent(url),
       "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
       "https://corsproxy.io/?url=" + encodeURIComponent(url),
-      "https://images.weserv.nl/?url=" + encodeURIComponent(url),
     ];
     for (const proxy of proxies) {
       try {
