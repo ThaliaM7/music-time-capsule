@@ -197,12 +197,12 @@ function ShareCard({ slots, userName, theme }) {
     ctx.font = "500 52px 'Bricolage Grotesque', sans-serif";
     ctx.textAlign = "center";
     const nameText = userName ? `${userName}'s` : "My";
-    ctx.fillText(nameText, W / 2, 115);
+    ctx.fillText(nameText, W / 2, 185);
 
     // "Music Capsule" in black box
     const titleBoxW = 860, titleBoxH = 130;
     const titleBoxX = (W - titleBoxW) / 2;
-    const titleBoxY = 135;
+    const titleBoxY = 205;
     ctx.fillStyle = T.titleBox;
     ctx.fillRect(titleBoxX, titleBoxY, titleBoxW, titleBoxH);
     ctx.strokeStyle = T.bg === "#C3FF00" ? "#C3FF00" : "#A237FF";
@@ -215,7 +215,7 @@ function ShareCard({ slots, userName, theme }) {
 
     // ── Track cards ──
     const cardX = 60, cardW = W - 120;
-    const cardYs = [330, 740, 1150];
+    const cardYs = [420, 830, 1240];
     const cardH = 360;
     const coverSize = 260;
     const labelMap = ["the past", "the present", "the future"];
@@ -272,7 +272,7 @@ function ShareCard({ slots, userName, theme }) {
     });
 
     // ── Bottom branding box ──
-    const brandBoxW = 780, brandBoxH = 120;
+    const brandBoxW = 680, brandBoxH = 130;
     const brandBoxX = (W - brandBoxW) / 2;
     const brandBoxY = H - 220;
     ctx.fillStyle = "#000";
@@ -280,7 +280,7 @@ function ShareCard({ slots, userName, theme }) {
     ctx.fillStyle = T.bg;
     ctx.font = "800 84px 'Bricolage Grotesque', sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("Legacy.wav", W / 2, brandBoxY + 94);
+    ctx.fillText("Legacy.wav", W / 2, brandBoxY + 100);
 
     // URL
     ctx.fillStyle = T.bg === "#C3FF00" ? "#000" : "#fff";
