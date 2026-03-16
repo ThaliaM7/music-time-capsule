@@ -175,9 +175,10 @@ function ShareCard({ slots, userName, theme }) {
     // Wave shapes from Figma — save/restore to apply clipping transform
     ctx.save();
     // Apply the same rotation transform from the SVG clip: rotate(-15.6891deg) around (-192, 389.443)
-    ctx.translate(-192, 750);
+    ctx.translate(0, 120);
+    ctx.translate(-192, 489.443);
     ctx.rotate(-15.6891 * Math.PI / 180);
-    ctx.translate(192, -750);
+    ctx.translate(192, -489.443);
     ctx.fillStyle = T.wave;
     const p1 = new Path2D(WAVE_PATH);
     ctx.fill(p1);
