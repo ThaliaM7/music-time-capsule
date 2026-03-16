@@ -93,6 +93,236 @@ function Slider({ label, value, min, max, onChange, color, unit }) {
   );
 }
 
+// ── Share Card (PNG export, 9:16 portrait) ───────────────────────────────────
+function ShareCard({ slots, userName }) {
+  const canvasRef = useRef(null);
+  const [exporting, setExporting] = useState(false);
+  const accents = ["#c084fc", "#67e8f9", "#86efac"];
+  const labelMap = { 0: "The Past", 1: "The Present", 2: "The Future" };
+
+  async function loadImage(url) {
+    // Fetch via proxy to avoid canvas taint
+    const proxy = "https://corsproxy.io/?url=" + encodeURIComponent(url);
+    const res = await fetch(proxy);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => { URL.revokeObjectURL(blobUrl); resolve(img); };
+      img.onerror = reject;
+      img.src = blobUrl;
+    });
+  }
+
+  async function drawCard() {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const W = 1080, H = 1920;
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d");
+
+    // Background — dark with gradient sweep
+    const bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, "#0a0a0f");
+    bg.addColorStop(0.4, "#12082a");
+    bg.addColorStop(0.7, "#071820");
+    bg.addColorStop(1, "#080f0a");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Accent glow blobs
+    const blobs = [
+      { x: 200, y: 400, color: "#c084fc", r: 400 },
+      { x: 880, y: 960, color: "#67e8f9", r: 350 },
+      { x: 300, y: 1500, color: "#86efac", r: 380 },
+    ];
+    blobs.forEach(({ x, y, color, r }) => {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, color + "22");
+      g.addColorStop(1, "transparent");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    // Top label
+    ctx.fillStyle = "rgba(255,255,255,0.35)";
+    ctx.font = "bold 38px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("◈ MUSIC TIME CAPSULE", W / 2, 100);
+
+    // User name
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 72px monospace";
+    ctx.textAlign = "center";
+    const displayName = userName ? `${userName}'s` : "My";
+    ctx.fillText(displayName, W / 2, 210);
+    ctx.fillStyle = "#c084fc";
+    ctx.font = "bold 68px monospace";
+    ctx.fillText("Music Capsule", W / 2, 295);
+
+    // Divider
+    ctx.strokeStyle = "rgba(255,255,255,0.08)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(80, 340); ctx.lineTo(W - 80, 340); ctx.stroke();
+
+    // Load all cover images
+    const covers = await Promise.all(
+      slots.map(async (slot) => {
+        try { return await loadImage(slot.selected.cover); }
+        catch { return null; }
+      })
+    );
+
+    // Draw three track cards
+    const cardY = [380, 800, 1220];
+    const cardH = 380;
+    const cardX = 60;
+    const cardW = W - 120;
+    const coverSize = 280;
+
+    slots.forEach((slot, i) => {
+      const y = cardY[i];
+      const accent = accents[i];
+
+      // Card background
+      ctx.save();
+      ctx.beginPath();
+      roundRect(ctx, cardX, y, cardW, cardH, 28);
+      ctx.fillStyle = "rgba(255,255,255,0.04)";
+      ctx.fill();
+      ctx.strokeStyle = accent + "55";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+
+      // Era label pill
+      ctx.save();
+      ctx.beginPath();
+      roundRect(ctx, cardX + 28, y + 28, 180, 44, 22);
+      ctx.fillStyle = accent + "22";
+      ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = accent;
+      ctx.font = "bold 22px monospace";
+      ctx.textAlign = "left";
+      ctx.fillText(labelMap[i].toUpperCase(), cardX + 52, y + 57);
+
+      // Album cover
+      const coverX = cardX + 28;
+      const coverY = y + 88;
+      if (covers[i]) {
+        ctx.save();
+        ctx.beginPath();
+        roundRect(ctx, coverX, coverY, coverSize, coverSize, 16);
+        ctx.clip();
+        ctx.drawImage(covers[i], coverX, coverY, coverSize, coverSize);
+        ctx.restore();
+        // Cover border
+        ctx.save();
+        ctx.beginPath();
+        roundRect(ctx, coverX, coverY, coverSize, coverSize, 16);
+        ctx.strokeStyle = accent + "88";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Track info
+      const textX = coverX + coverSize + 32;
+      const textW = cardW - coverSize - 80;
+
+      // Song title
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 38px sans-serif";
+      ctx.textAlign = "left";
+      wrapText(ctx, slot.selected.title, textX, coverY + 50, textW, 46);
+
+      // Artist
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.font = "32px sans-serif";
+      ctx.fillText(slot.selected.artist, textX, coverY + 160);
+
+      // Year
+      if (slot.selected.year) {
+        ctx.save();
+        ctx.beginPath();
+        roundRect(ctx, textX, coverY + 200, 130, 50, 25);
+        ctx.fillStyle = accent + "33";
+        ctx.fill();
+        ctx.restore();
+        ctx.fillStyle = accent;
+        ctx.font = "bold 28px monospace";
+        ctx.fillText(slot.selected.year, textX + 20, coverY + 234);
+      }
+    });
+
+    // Bottom branding
+    ctx.fillStyle = "rgba(255,255,255,0.2)";
+    ctx.font = "28px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("music-time-capsule.vercel.app", W / 2, H - 60);
+
+    return canvas;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  function wrapText(ctx, text, x, y, maxW, lineH) {
+    const words = text.split(" ");
+    let line = "";
+    let lineCount = 0;
+    for (const word of words) {
+      const test = line + word + " ";
+      if (ctx.measureText(test).width > maxW && line !== "") {
+        ctx.fillText(line.trim(), x, y + lineCount * lineH);
+        line = word + " ";
+        lineCount++;
+        if (lineCount >= 2) break;
+      } else {
+        line = test;
+      }
+    }
+    if (lineCount < 2) ctx.fillText(line.trim(), x, y + lineCount * lineH);
+  }
+
+  async function handleExport() {
+    setExporting(true);
+    try {
+      const canvas = await drawCard();
+      const link = document.createElement("a");
+      link.download = `${userName ? userName.replace(/\s+/g, "-") : "my"}-music-capsule.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (e) {
+      console.error("Export failed:", e);
+    }
+    setExporting(false);
+  }
+
+  return (
+    <div style={{ textAlign: "center", marginTop: 32 }}>
+      <canvas ref={canvasRef} style={{ display: "none" }} />
+      <button onClick={handleExport} disabled={exporting}
+        style={{ background: exporting ? "rgba(255,255,255,0.03)" : "linear-gradient(135deg, #c084fc44, #67e8f944)", border: "1px solid rgba(192,132,252,0.4)", color: exporting ? "#444" : "#c084fc", borderRadius: 10, fontFamily: "'Space Mono', monospace", fontSize: 12, fontWeight: 700, padding: "12px 28px", cursor: exporting ? "not-allowed" : "pointer", transition: "all 0.2s", letterSpacing: "0.08em" }}>
+        {exporting ? "Generating card..." : "Download Card (PNG)"}
+      </button>
+      {exporting && <div style={{ color: "#555", fontFamily: "'DM Sans', sans-serif", fontSize: 12, marginTop: 8 }}>Loading album art and drawing card...</div>}
+    </div>
+  );
+}
+
 // ── Vinyl Card ────────────────────────────────────────────────────────────────
 function VinylCapsuleCard({ slots, onShare, shared = false }) {
   const [copied, setCopied] = useState(false);
@@ -739,6 +969,7 @@ export default function App() {
   const [sealed, setSealed] = useState(false);
   const [volumes, setVolumes] = useState({ 0: 0.8, 1: 0.8, 2: 0.8 });
   const [speeds, setSpeeds] = useState({ 0: 1, 1: 1, 2: 1 });
+  const [userName, setUserName] = useState("");
   const allSelected = slots.every((s) => s.selected !== null);
 
   if (sharedCapsule) return <ReceiverView slots={sharedCapsule} />;
@@ -811,7 +1042,20 @@ export default function App() {
         )}
         {sealed && (
           <div style={{ marginTop: 48 }}>
+            {/* Name input for card */}
+            <div style={{ textAlign: "center", marginBottom: 24 }}>
+              <div style={{ fontSize: 11, fontFamily: "'Space Mono', monospace", letterSpacing: "0.2em", color: "#555", marginBottom: 10, textTransform: "uppercase" }}>◈ Your name on the card</div>
+              <input
+                type="text"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="e.g. Thalia"
+                maxLength={24}
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, color: "#fff", fontFamily: "'Space Mono', monospace", fontSize: 16, fontWeight: 700, padding: "10px 16px", width: 220, outline: "none", textAlign: "center" }}
+              />
+            </div>
             <VinylCapsuleCard slots={slots} onShare={handleShare} />
+            <ShareCard slots={slots} userName={userName} />
             <CrossfadeMixer
               slots={slots} volumes={volumes} speeds={speeds}
               onVolumeChange={(i, v) => setVolumes((p) => ({ ...p, [i]: v }))}
