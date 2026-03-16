@@ -1133,14 +1133,14 @@ export default function App() {
 
         {/* ── Header ── */}
         <div style={{ padding: "32px 24px 0", maxWidth: 960, margin: "0 auto" }}>
-          <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>Remix Three Eras</div>
-          <div style={{ padding: "32px 24px 0", maxWidth: 960, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "capitalize" }}>Remix Three Eras</div>
+          <div style={{ display: "inline-block", background: "#A237FF", padding: "8px 24px", marginBottom: 16, maxWidth: "fit-content" }}>
             <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(32px, 6vw, 56px)", fontWeight: 800, margin: 0, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
               Music Capsule
             </h1>
           </div>
           <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#fff", fontSize: 14, lineHeight: 1.6, maxWidth: 500, marginBottom: 24, margin: "0 auto 24px" }}>
-          Select 3 tracks and then Seal The Capsule to recieve a visualizer and download your mix.Search by artist, song, or genre - add a year to narrow it down..
+          Select 3 tracks and then Seal The Capsule to recieve a visualizer and download your mix.Search by artist, song, or genre - add a year to narrow it down.
           </p>
 
           {/* Hero image */}
