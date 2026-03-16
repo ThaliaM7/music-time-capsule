@@ -272,7 +272,7 @@ function ShareCard({ slots, userName, theme }) {
     });
 
     // ── Bottom branding box ──
-    const brandBoxW = 680, brandBoxH = 130;
+    const brandBoxW = 580, brandBoxH = 115;
     const brandBoxX = (W - brandBoxW) / 2;
     const brandBoxY = H - 220;
     ctx.fillStyle = "#000";
@@ -280,7 +280,8 @@ function ShareCard({ slots, userName, theme }) {
     ctx.fillStyle = T.bg;
     ctx.font = "800 84px 'Bricolage Grotesque', sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("Legacy.wav", W / 2, brandBoxY + 100);
+    ctx.textBaseline = "middle";
+    ctx.fillText("Legacy.wav", W / 2, brandBoxY + brandBoxH / 2);
 
     // URL
     ctx.fillStyle = T.bg === "#C3FF00" ? "#000" : "#fff";
