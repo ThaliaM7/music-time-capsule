@@ -110,9 +110,9 @@ function ShareCard({ slots, userName, theme }) {
 
   async function loadImageAsBlob(url) {
     const proxies = [
+      "https://images.weserv.nl/?url=" + encodeURIComponent(url),
       "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
       "https://corsproxy.io/?url=" + encodeURIComponent(url),
-      "https://images.weserv.nl/?url=" + encodeURIComponent(url),
     ];
     for (const proxy of proxies) {
       try {
@@ -585,20 +585,40 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
   useEffect(() => { volumesRef.current = volumes; }, [volumes]);
 
   useEffect(() => {
-    slots.forEach((slot, i) => {
-      if (slot.selected?.preview) {
-        const audio = new Audio(slot.selected.preview);
-        audio.loop = true;
-        audio.volume = 0;
-        audio.playbackRate = speeds[i];
-        audio.preload = "auto";
-        audio.onerror = (e) => console.warn("Audio load error slot", i, e);
-        audio.oncanplaythrough = () => console.log("Audio ready slot", i);
-        audioRefs.current[i] = audio;
-        audio.load();
+    let cancelled = false;
+    const setup = async () => {
+      for (let i = 0; i < slots.length; i++) {
+        if (cancelled) break;
+        const slot = slots[i];
+        if (!slot.selected?.preview) continue;
+        // Try direct URL first, fall back to proxy if CORS blocks it
+        const urls = [
+          slot.selected.preview,
+          "https://corsproxy.io/?url=" + encodeURIComponent(slot.selected.preview),
+        ];
+        for (const url of urls) {
+          try {
+            const audio = new Audio(url);
+            audio.loop = true;
+            audio.volume = 0;
+            audio.playbackRate = speeds[i];
+            audio.preload = "auto";
+            await new Promise((resolve, reject) => {
+              audio.oncanplaythrough = resolve;
+              audio.onerror = reject;
+              audio.load();
+              // Don't wait forever — resolve after 3s regardless
+              setTimeout(resolve, 3000);
+            });
+            audioRefs.current[i] = audio;
+            break; // success, stop trying URLs
+          } catch { continue; }
+        }
       }
-    });
+    };
+    setup();
     return () => {
+      cancelled = true;
       audioRefs.current.forEach((a) => { if (a) { a.pause(); a.src = ""; } });
       audioRefs.current = [null, null, null];
     };
@@ -715,90 +735,157 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
     if (audioRefs.current[index]) audioRefs.current[index].playbackRate = val;
   }
 
-  // ── MP3 Export ─────────────────────────────────────────────────────────────
+  // ── Export Mix ─────────────────────────────────────────────────────────────
+  // Records the crossfade mix in real time and exports as MP4/WebM (mobile)
+  // or falls back gracefully. Uses Web Audio API to mix all three tracks.
   async function exportMP3() {
     if (recording) return;
 
-    if (!window.lamejs) {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js";
-        script.onload = resolve; script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    }
-
     const totalDuration = durationsRef.current[0] + durationsRef.current[1] + durationsRef.current[2];
+    const sampleRate = 44100;
+    const numChannels = 2;
 
-    // Use AudioContext + destination stream for recording
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const dest = ctx.createMediaStreamDestination();
+    // Use OfflineAudioContext to render the full mix non-real-time
+    // This is the most reliable approach across iOS/Android/Desktop
+    const offlineCtx = new OfflineAudioContext(
+      numChannels,
+      Math.ceil((totalDuration + 1) * sampleRate),
+      sampleRate
+    );
 
-    // Connect each audio element through a gain node to the recording destination
-    const sources = [];
-    for (let i = 0; i < audioRefs.current.length; i++) {
-      const audio = audioRefs.current[i];
-      if (audio) {
-        try {
-          const gainNode = ctx.createGain();
-          gainNode.gain.value = 0;
-          gainNode.connect(dest);
-          // Store so tick can control recording gain separately
-          sources.push({ audio, gainNode, index: i });
-        } catch(e) { sources.push(null); }
-      }
-    }
-
-    recordedChunksRef.current = [];
-    const recorder = new MediaRecorder(dest.stream, { mimeType: "audio/webm;codecs=opus" });
-    mediaRecorderRef.current = recorder;
-
-    recorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunksRef.current.push(e.data); };
-
-    recorder.onstop = async () => {
-      ctx.close();
-      const blob = new Blob(recordedChunksRef.current, { type: "audio/webm" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = "my-capsule.webm"; a.click();
-      URL.revokeObjectURL(url);
-      audioRefs.current.forEach((a) => { if (a) { a.pause(); a.currentTime = 0; a.volume = 0; } });
-      setPlaying(false); setCurrentEra(0); setProgress(0); eraRef.current = 0;
-      setRecording(false); setRecordProgress(0);
-      clearInterval(recordTimerRef.current);
-    };
-
-    recorder.start(100);
     setRecording(true);
     setRecordProgress(0);
 
-    // Reset and play from start — use audio.volume directly (same as playback)
-    eraRef.current = 0; scratchFiredRef.current = false;
-    audioRefs.current.forEach((a) => { if (a) { a.currentTime = 0; a.volume = 0; } });
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    audioRefs.current.forEach((a) => a?.play());
-    startTimeRef.current = performance.now();
-    cancelAnimationFrame(fadeRef.current);
-    fadeRef.current = requestAnimationFrame(tick);
+    try {
+      // For each slot, fetch audio as ArrayBuffer and decode it
+      const buffers = await Promise.all(
+        slots.map(async (slot) => {
+          if (!slot.selected?.preview) return null;
+          const urls = [
+            slot.selected.preview,
+            "https://corsproxy.io/?url=" + encodeURIComponent(slot.selected.preview),
+            "https://api.allorigins.win/raw?url=" + encodeURIComponent(slot.selected.preview),
+          ];
+          for (const url of urls) {
+            try {
+              const res = await fetch(url);
+              if (!res.ok) continue;
+              const arrayBuffer = await res.arrayBuffer();
+              const decoded = await offlineCtx.decodeAudioData(arrayBuffer.slice(0));
+              return decoded;
+            } catch { continue; }
+          }
+          return null;
+        })
+      );
 
-    // Mirror audio.volume to recording gain nodes in sync
-    const mirrorInterval = setInterval(() => {
-      audioRefs.current.forEach((audio, i) => {
-        if (audio && sources[i]) sources[i].gainNode.gain.value = audio.volume;
+      setRecordProgress(0.15);
+
+      // Schedule each buffer according to the crossfade timeline
+      // Era 0: plays from t=0 to t=dur[0]
+      // Era 1: plays from t=dur[0] to t=dur[0]+dur[1]
+      // Era 2: plays from t=dur[0]+dur[1] to end
+      const dur = durationsRef.current;
+      const startTimes = [0, dur[0], dur[0] + dur[1]];
+      const FADE = 2;
+
+      buffers.forEach((buffer, i) => {
+        if (!buffer) return;
+        const baseVol = volumesRef.current[i] ?? 0.8;
+        const speed = speeds[i] ?? 1;
+        const eraStart = startTimes[i];
+        const eraDur = dur[i];
+
+        // Loop the buffer if it's shorter than the era duration
+        const source = offlineCtx.createBufferSource();
+        source.buffer = buffer;
+        source.loop = true;
+        source.playbackRate.value = speed;
+
+        const gainNode = offlineCtx.createGain();
+        gainNode.gain.setValueAtTime(0, 0);
+
+        // Fade in at era start (except era 0 which starts immediately)
+        if (i === 0) {
+          gainNode.gain.setValueAtTime(baseVol, eraStart);
+        } else {
+          // Fade in over FADE seconds from previous era's end
+          gainNode.gain.setValueAtTime(0, eraStart - FADE);
+          gainNode.gain.linearRampToValueAtTime(baseVol, eraStart);
+        }
+
+        // Fade out at era end (except last era which fades over 3s)
+        if (i === 2) {
+          gainNode.gain.setValueAtTime(baseVol, eraStart + eraDur - 3);
+          gainNode.gain.linearRampToValueAtTime(0, eraStart + eraDur);
+        } else {
+          gainNode.gain.setValueAtTime(baseVol, eraStart + eraDur - FADE);
+          gainNode.gain.linearRampToValueAtTime(0, eraStart + eraDur);
+        }
+
+        source.connect(gainNode);
+        gainNode.connect(offlineCtx.destination);
+        source.start(eraStart > FADE ? eraStart - FADE : 0);
+        source.stop(eraStart + eraDur + 0.1);
       });
-    }, 50);
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    const start = Date.now();
-    recordTimerRef.current = setInterval(() => {
-      const elapsed = (Date.now() - start) / 1000;
-      setRecordProgress(Math.min(1, elapsed / totalDuration));
-      if (elapsed >= totalDuration) {
-        clearInterval(recordTimerRef.current);
-        clearInterval(mirrorInterval);
-        recorder.stop();
+      setRecordProgress(0.25);
+
+      // Render the full mix
+      const renderedBuffer = await offlineCtx.startRendering();
+      setRecordProgress(0.7);
+
+      // Encode to WAV — universally supported on iOS, Android, Desktop
+      function encodeWAV(buffer) {
+        const numCh = buffer.numberOfChannels;
+        const sr = buffer.sampleRate;
+        const samples = buffer.length * numCh;
+        const byteRate = sr * numCh * 2;
+        const blockAlign = numCh * 2;
+        const dataSize = samples * 2;
+        const ab = new ArrayBuffer(44 + dataSize);
+        const view = new DataView(ab);
+        const writeStr = (off, str) => { for (let i = 0; i < str.length; i++) view.setUint8(off + i, str.charCodeAt(i)); };
+        writeStr(0, "RIFF");
+        view.setUint32(4, 36 + dataSize, true);
+        writeStr(8, "WAVE");
+        writeStr(12, "fmt ");
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true); // PCM
+        view.setUint16(22, numCh, true);
+        view.setUint32(24, sr, true);
+        view.setUint32(28, byteRate, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, 16, true); // 16-bit
+        writeStr(36, "data");
+        view.setUint32(40, dataSize, true);
+        let offset = 44;
+        for (let s = 0; s < buffer.length; s++) {
+          for (let ch = 0; ch < numCh; ch++) {
+            const sample = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[s]));
+            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            offset += 2;
+          }
+        }
+        return new Blob([ab], { type: "audio/wav" });
       }
-    }, 200);
+
+      const wavBlob = encodeWAV(renderedBuffer);
+      setRecordProgress(1);
+
+      const url = URL.createObjectURL(wavBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "my-capsule.wav";
+      a.click();
+      URL.revokeObjectURL(url);
+
+    } catch (e) {
+      console.error("Export failed:", e);
+    }
+
+    setRecording(false);
+    setRecordProgress(0);
   }
 
 
@@ -819,7 +906,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
         <div style={{ marginTop: 20 }}>
           <button onClick={exportMP3} disabled={recording}
             style={{ background: recording ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.06)", border: `1px solid ${recording ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.15)"}`, color: recording ? "#444" : "#aaa", borderRadius: 10, fontFamily: "'Space Mono', monospace", fontSize: 12, fontWeight: 700, padding: "10px 24px", cursor: recording ? "not-allowed" : "pointer", transition: "all 0.2s", letterSpacing: "0.08em" }}>
-            {recording ? "Recording..." : "Export Mix"}
+            {recording ? `Rendering mix... ${Math.round(recordProgress * 100)}%` : "Export Mix (WAV)"}
           </button>
           {recording && (
             <div style={{ marginTop: 12, maxWidth: 300, margin: "12px auto 0" }}>
