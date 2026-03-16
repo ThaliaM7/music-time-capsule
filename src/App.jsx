@@ -205,6 +205,9 @@ function ShareCard({ slots, userName, theme }) {
     const titleBoxY = 135;
     ctx.fillStyle = T.titleBox;
     ctx.fillRect(titleBoxX, titleBoxY, titleBoxW, titleBoxH);
+    ctx.strokeStyle = T.bg === "#C8F135" ? "#C8F135" : "#9B4DFF";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(titleBoxX, titleBoxY, titleBoxW, titleBoxH);
     ctx.fillStyle = T.titleText;
     ctx.font = "800 96px 'Bricolage Grotesque', sans-serif";
     ctx.textAlign = "center";
@@ -262,11 +265,10 @@ function ShareCard({ slots, userName, theme }) {
       ctx.textAlign = "left";
       wrapText(ctx, slot.selected.title, textX, coverY + 68, textMaxW, 70, 2);
 
-      // Year + Artist
+      // Artist
       ctx.fillStyle = T.cardText;
       ctx.font = "400 36px 'Bricolage Grotesque', sans-serif";
-      const yearArtist = [slot.selected.year, slot.selected.artist].filter(Boolean).join("  ·  ");
-      ctx.fillText(yearArtist, textX, coverY + 210);
+      ctx.fillText(slot.selected.artist, textX, coverY + 210);
     });
 
     // ── Bottom branding box ──
