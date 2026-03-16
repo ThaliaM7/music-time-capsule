@@ -112,17 +112,19 @@ function ShareCard({ slots, userName, theme }) {
     const proxies = [
       "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
       "https://corsproxy.io/?url=" + encodeURIComponent(url),
+      "https://images.weserv.nl/?url=" + encodeURIComponent(url),
     ];
     for (const proxy of proxies) {
       try {
-        const res = await fetch(proxy);
+        const res = await fetch(proxy, { signal: AbortSignal.timeout(5000) });
         if (!res.ok) continue;
         const blob = await res.blob();
+        if (blob.size < 100) continue;
         const blobUrl = URL.createObjectURL(blob);
         return await new Promise((resolve, reject) => {
           const img = new Image();
           img.onload = () => { URL.revokeObjectURL(blobUrl); resolve(img); };
-          img.onerror = reject;
+          img.onerror = () => { URL.revokeObjectURL(blobUrl); reject(); };
           img.src = blobUrl;
         });
       } catch { continue; }
@@ -175,7 +177,7 @@ function ShareCard({ slots, userName, theme }) {
     // Wave shapes from Figma — save/restore to apply clipping transform
     ctx.save();
     // Apply the same rotation transform from the SVG clip: rotate(-15.6891deg) around (-192, 389.443)
-    ctx.translate(0, 240);
+    ctx.translate(0, 280);
     ctx.translate(-192, 489.443);
     ctx.rotate(-15.6891 * Math.PI / 180);
     ctx.translate(192, -489.443);
@@ -260,14 +262,11 @@ function ShareCard({ slots, userName, theme }) {
       ctx.textAlign = "left";
       wrapText(ctx, slot.selected.title, textX, coverY + 68, textMaxW, 70, 2);
 
-      // Year
+      // Year + Artist
       ctx.fillStyle = T.cardText;
-      ctx.font = "400 38px 'Bricolage Grotesque', sans-serif";
-      ctx.fillText(slot.selected.year || "", textX, coverY + 175);
-
-      // Artist
-      ctx.font = "400 38px 'Bricolage Grotesque', sans-serif";
-      ctx.fillText(slot.selected.artist, textX, coverY + 220);
+      ctx.font = "400 36px 'Bricolage Grotesque', sans-serif";
+      const yearArtist = [slot.selected.year, slot.selected.artist].filter(Boolean).join("  ·  ");
+      ctx.fillText(yearArtist, textX, coverY + 210);
     });
 
     // ── Bottom branding box ──
