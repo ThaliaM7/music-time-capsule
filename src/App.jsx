@@ -78,8 +78,8 @@ function Slider({ label, value, min, max, onChange, color, unit }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ color: "#555", fontFamily: "'Space Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
-        <div style={{ color, fontFamily: "'Space Mono', monospace", fontSize: 12, fontWeight: 700 }}>{displayValue}</div>
+        <div style={{ color: "#555", fontFamily: "'Bricolage Grotesque', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
+        <div style={{ color, fontFamily: "'Bricolage Grotesque', monospace", fontSize: 12, fontWeight: 700 }}>{displayValue}</div>
       </div>
       <div style={{ position: "relative", height: 20, display: "flex", alignItems: "center" }}>
         <div style={{ position: "absolute", width: "100%", height: 4, borderRadius: 2, background: "rgba(255,255,255,0.08)" }} />
@@ -318,7 +318,7 @@ function ShareCard({ slots, userName, theme }) {
           <div key={id} onClick={() => setCardTheme(id)}
             style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 18px", background: cardTheme === id ? color : "transparent", cursor: "pointer", transition: "all 0.15s" }}>
             <div style={{ width: 10, height: 10, borderRadius: "50%", background: cardTheme === id ? "#000" : color, flexShrink: 0 }} />
-            <span style={{ color: cardTheme === id ? "#000" : "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: cardTheme === id ? 700 : 400 }}>{label}</span>
+            <span style={{ color: cardTheme === id ? "#000" : "rgba(255,255,255,0.5)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: cardTheme === id ? 700 : 400 }}>{label}</span>
           </div>
         ))}
       </div>
@@ -345,7 +345,7 @@ function VinylCapsuleCard({ slots, onShare, shared = false }) {
 
   return (
     <div style={{ textAlign: "center", margin: "0 auto 48px", maxWidth: 480 }}>
-      {!shared && <div style={{ fontSize: 11, fontFamily: "'Space Mono', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 20, textTransform: "uppercase" }}>◈ Your Capsule</div>}
+      {!shared && <div style={{ fontSize: 11, fontFamily: "'Bricolage Grotesque', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 20, textTransform: "uppercase" }}>◈ Your Capsule</div>}
       <div style={{ position: "relative", width: 280, height: 280, margin: "0 auto 28px" }}>
         <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle, #1a1a2e 30%, #0d0d1a 60%, #111 100%)", border: "2px solid rgba(255,255,255,0.06)", animation: "spinSlow 12s linear infinite" }} />
         {[100, 115, 130, 145].map((r) => (
@@ -369,15 +369,15 @@ function VinylCapsuleCard({ slots, onShare, shared = false }) {
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 16px", background: "rgba(255,255,255,0.03)", borderRadius: 8, border: `1px solid ${accentMap[i]}22` }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: accentMap[i], flexShrink: 0 }} />
             <div style={{ flex: 1, textAlign: "left" }}>
-              <span style={{ color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600 }}>{slot.selected?.title}</span>
-              <span style={{ color: "#555", fontFamily: "'DM Sans', sans-serif", fontSize: 12 }}> — {slot.selected?.artist}</span>
+              <span style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 600 }}>{slot.selected?.title}</span>
+              <span style={{ color: "#555", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12 }}> — {slot.selected?.artist}</span>
             </div>
-            {slot.selected?.year && <div style={{ color: accentMap[i], fontFamily: "'Space Mono', monospace", fontSize: 11, flexShrink: 0 }}>{slot.selected.year}</div>}
+            {slot.selected?.year && <div style={{ color: accentMap[i], fontFamily: "'Bricolage Grotesque', monospace", fontSize: 11, flexShrink: 0 }}>{slot.selected.year}</div>}
           </div>
         ))}
       </div>
       {!shared && (
-        <button onClick={handleShare} style={{ background: copied ? "rgba(195,255,0,0.15)" : "rgba(255,255,255,0.06)", border: `1.5px solid ${copied ? "#C3FF00" : "rgba(255,255,255,0.15)"}`, color: copied ? "#C3FF00" : "rgba(255,255,255,0.6)", borderRadius: 0, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, padding: "12px 28px", cursor: "pointer", transition: "all 0.2s" }}>
+        <button onClick={handleShare} style={{ background: copied ? "rgba(195,255,0,0.15)" : "rgba(255,255,255,0.06)", border: `1.5px solid ${copied ? "#C3FF00" : "rgba(255,255,255,0.15)"}`, color: copied ? "#C3FF00" : "rgba(255,255,255,0.6)", borderRadius: 0, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 600, padding: "12px 28px", cursor: "pointer", transition: "all 0.2s" }}>
           {copied ? "✓ Link copied!" : "Share Capsule"}
         </button>
       )}
@@ -489,18 +489,18 @@ function ReceiverView({ slots }) {
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
       <div style={{ textAlign: "center", marginBottom: 40 }}>
-        <div style={{ fontSize: 11, fontFamily: "'Space Mono', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 12, textTransform: "uppercase" }}>◈ Music Time Capsule</div>
-        <h1 style={{ fontFamily: "'Space Mono', monospace", fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, margin: 0, background: "linear-gradient(135deg, #c084fc, #67e8f9, #86efac)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.15 }}>
+        <div style={{ fontSize: 11, fontFamily: "'Bricolage Grotesque', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 12, textTransform: "uppercase" }}>◈ Music Time Capsule</div>
+        <h1 style={{ fontFamily: "'Bricolage Grotesque', monospace", fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, margin: 0, background: "linear-gradient(135deg, #c084fc, #67e8f9, #86efac)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.15 }}>
           Someone shared a capsule with you
         </h1>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", color: "#555", fontSize: 15, marginTop: 12, lineHeight: 1.6 }}>Three songs across three eras, mixed into one journey.</p>
+        <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#555", fontSize: 15, marginTop: 12, lineHeight: 1.6 }}>Three songs across three eras, mixed into one journey.</p>
       </div>
       <VinylCapsuleCard slots={slots} shared={true} onShare={() => {}} />
       <div style={{ maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
         <button onClick={togglePlay} style={{ background: playing ? "linear-gradient(135deg, #c084fc, #67e8f9)" : "rgba(255,255,255,0.08)", color: playing ? "#000" : "#fff", border: "none", borderRadius: 50, width: 72, height: 72, fontSize: 28, cursor: "pointer", transition: "all 0.2s", boxShadow: playing ? "0 0 40px rgba(192,132,252,0.4)" : "none", marginBottom: 12 }}>
           {playing ? "⏸" : "▶"}
         </button>
-        <div style={{ color: "#444", fontSize: 12, fontFamily: "'Space Mono', monospace", marginBottom: 32 }}>
+        <div style={{ color: "#444", fontSize: 12, fontFamily: "'Bricolage Grotesque', monospace", marginBottom: 32 }}>
           {playing ? `era ${currentEra + 1} of 3 — crossfading` : "press play to experience the capsule"}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -511,23 +511,23 @@ function ReceiverView({ slots }) {
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: isActive ? `${accent}12` : "rgba(255,255,255,0.02)", borderRadius: 10, border: `1px solid ${isActive ? accent + "66" : "rgba(255,255,255,0.06)"}`, transition: "all 0.4s" }}>
                 <img src={slot.selected?.cover} alt="" style={{ width: 44, height: 44, borderRadius: 6, objectFit: "cover", boxShadow: isActive ? `0 0 12px ${accent}66` : "none", transform: isActive ? "scale(1.05)" : "scale(1)", transition: "all 0.4s" }} />
                 <div style={{ flex: 1, textAlign: "left" }}>
-                  <div style={{ color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600 }}>{slot.selected?.title}</div>
-                  <div style={{ color: "#555", fontFamily: "'DM Sans', sans-serif", fontSize: 12 }}>{slot.selected?.artist}{slot.selected?.year ? ` · ${slot.selected.year}` : ""}</div>
+                  <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 600 }}>{slot.selected?.title}</div>
+                  <div style={{ color: "#555", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12 }}>{slot.selected?.artist}{slot.selected?.year ? ` · ${slot.selected.year}` : ""}</div>
                   {isActive && (
                     <div style={{ marginTop: 6, height: 2, background: "rgba(255,255,255,0.08)", borderRadius: 1, overflow: "hidden" }}>
                       <div style={{ height: "100%", width: `${progress * 100}%`, background: accent, transition: "width 0.1s linear" }} />
                     </div>
                   )}
                 </div>
-                {isActive && <div style={{ color: accent, fontSize: 10, fontFamily: "'Space Mono', monospace", letterSpacing: "0.1em" }}>● NOW</div>}
+                {isActive && <div style={{ color: accent, fontSize: 10, fontFamily: "'Bricolage Grotesque', monospace", letterSpacing: "0.1em" }}>● NOW</div>}
               </div>
             );
           })}
         </div>
         <div style={{ marginTop: 40, padding: "20px 24px", background: "rgba(255,255,255,0.02)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)" }}>
-          <div style={{ color: "#555", fontFamily: "'DM Sans', sans-serif", fontSize: 14, marginBottom: 14, lineHeight: 1.6 }}>Want to make your own time capsule?</div>
+          <div style={{ color: "#555", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, marginBottom: 14, lineHeight: 1.6 }}>Want to make your own time capsule?</div>
           <button onClick={() => { window.location.hash = ""; window.location.reload(); }}
-            style={{ background: "linear-gradient(135deg, #c084fc, #67e8f9)", color: "#000", border: "none", borderRadius: 10, fontFamily: "'Space Mono', monospace", fontSize: 12, fontWeight: 700, padding: "12px 28px", cursor: "pointer", letterSpacing: "0.08em" }}>
+            style={{ background: "linear-gradient(135deg, #c084fc, #67e8f9)", color: "#000", border: "none", borderRadius: 10, fontFamily: "'Bricolage Grotesque', monospace", fontSize: 12, fontWeight: 700, padding: "12px 28px", cursor: "pointer", letterSpacing: "0.08em" }}>
             Create Your Capsule →
           </button>
         </div>
@@ -900,8 +900,8 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
     <div>
       {/* ── Play + Export ── */}
       <div style={{ textAlign: "center", marginBottom: 28 }}>
-        <div style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Crossfade Mixer</div>
-        <div style={{ fontSize: 13, fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.35)", marginBottom: 16 }}>
+        <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Crossfade Mixer</div>
+        <div style={{ fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgba(255,255,255,0.35)", marginBottom: 16 }}>
           Press play to listen or customize your mix using the settings below.
         </div>
         <button onClick={playing ? stopPlayback : startPlayback}
@@ -927,10 +927,10 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
 
       {/* ── Mixing Settings / Transition pickers ── */}
       <div style={{ marginBottom: 28, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Mixing Settings</div>
+        <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Mixing Settings</div>
         {[0, 1].map((handoff) => (
           <div key={handoff} style={{ marginBottom: handoff === 0 ? 20 : 0 }}>
-            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontFamily: "'DM Sans', sans-serif", marginBottom: 8 }}>
+            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: 8 }}>
               Track {handoff + 1} → Track {handoff + 2}
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -938,7 +938,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
                 const active = transitions[handoff] === t.id;
                 return (
                   <button key={t.id} onClick={() => setTransitions((prev) => ({ ...prev, [handoff]: t.id }))}
-                    style={{ background: active ? PURPLE : "transparent", color: active ? "#fff" : "rgba(255,255,255,0.4)", border: `1.5px solid ${active ? PURPLE : "rgba(255,255,255,0.15)"}`, borderRadius: 4, padding: "6px 14px", fontSize: 12, fontFamily: "'DM Sans', sans-serif", fontWeight: active ? 700 : 400, cursor: "pointer", transition: "all 0.15s" }}>
+                    style={{ background: active ? PURPLE : "transparent", color: active ? "#fff" : "rgba(255,255,255,0.4)", border: `1.5px solid ${active ? PURPLE : "rgba(255,255,255,0.15)"}`, borderRadius: 4, padding: "6px 14px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: active ? 700 : 400, cursor: "pointer", transition: "all 0.15s" }}>
                     {t.label}
                   </button>
                 );
@@ -959,14 +959,14 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
                 <img src={slot.selected.cover} alt="" style={{ width: 52, height: 52, objectFit: "cover", flexShrink: 0, border: `2px solid ${isActive ? accent : "transparent"}`, transition: "border-color 0.4s" }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 2 }}>{slot.selected.title}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{slot.selected.artist}</div>
+                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{slot.selected.artist}</div>
                   {isActive && (
                     <div style={{ marginTop: 6, height: 2, background: "rgba(255,255,255,0.08)" }}>
                       <div style={{ height: "100%", width: `${progress * 100}%`, background: LIME, transition: "width 0.1s linear" }} />
                     </div>
                   )}
                 </div>
-                {isActive && <div style={{ color: LIME, fontSize: 10, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "0.1em" }}>NOW</div>}
+                {isActive && <div style={{ color: LIME, fontSize: 10, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, letterSpacing: "0.1em" }}>NOW</div>}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 <Slider label="Duration" value={durations[slot.index]} min={5} max={30}
@@ -999,7 +999,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       <input type="text" value={slot.query}
         onChange={(e) => onYearChange(slot.index, slot.year, e.target.value)}
         placeholder="Artist, song, or genre"
-        style={{ background: "#fff", border: "2px solid #000", borderRadius: 0, color: "#000", fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 500, padding: "12px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
+        style={{ background: "#fff", border: "2px solid #000", borderRadius: 0, color: "#000", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 500, padding: "12px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
 
       {/* Genre chips */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -1007,7 +1007,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
           const selected = slot.query === chip.query;
           return (
             <div key={chip.query} onClick={() => onYearChange(slot.index, slot.year, chip.query)}
-              style={{ background: selected ? PURPLE : "transparent", border: `1.5px solid ${selected ? PURPLE : "rgba(255,255,255,0.25)"}`, borderRadius: 4, padding: "4px 10px", fontSize: 12, fontFamily: "'DM Sans', sans-serif", fontWeight: selected ? 700 : 400, color: selected ? "#fff" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.15s" }}>
+              style={{ background: selected ? PURPLE : "transparent", border: `1.5px solid ${selected ? PURPLE : "rgba(255,255,255,0.25)"}`, borderRadius: 4, padding: "4px 10px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: selected ? 700 : 400, color: selected ? "#fff" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.15s" }}>
               {chip.label}
             </div>
           );
@@ -1018,7 +1018,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       <input type="number" min="1900" max="2099" value={slot.year}
         onChange={(e) => onYearChange(slot.index, e.target.value)}
         placeholder="Year (optional)"
-        style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 0, color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 14, padding: "10px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
+        style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, padding: "10px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
 
       {/* Search button */}
       <button onClick={() => onSearch(slot.index)} disabled={(!slot.year && !slot.query) || slot.loading}
@@ -1026,12 +1026,12 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
         {slot.loading ? "Searching..." : "Search"}
       </button>
 
-      {slot.error && <div style={{ color: "#f87171", fontSize: 13, fontFamily: "'DM Sans', sans-serif" }}>{slot.error}</div>}
+      {slot.error && <div style={{ color: "#f87171", fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif" }}>{slot.error}</div>}
 
       {/* Results */}
       {slot.results.length > 0 && !slot.selected && (
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <div style={{ fontSize: 10, color: "#555", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 4 }}>Pick a track</div>
+          <div style={{ fontSize: 10, color: "#555", fontFamily: "'Bricolage Grotesque', sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 4 }}>Pick a track</div>
           {slot.results.map((song) => (
             <div key={song.id} onClick={() => onSelect(slot.index, song)}
               style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.04)", borderRadius: 0, padding: "7px 10px", cursor: "pointer", border: "1px solid rgba(255,255,255,0.06)" }}
@@ -1039,8 +1039,8 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
               onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}>
               <img src={song.cover} alt={song.album} style={{ width: 32, height: 32, objectFit: "cover", flexShrink: 0 }} />
               <div style={{ overflow: "hidden", display: "flex", flexDirection: "column", gap: 1 }}>
-                <div style={{ color: "#fff", fontSize: 12, fontFamily: "'DM Sans', sans-serif", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.title}</div>
-                <div style={{ color: "#666", fontSize: 11, fontFamily: "'DM Sans', sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.artist}</div>
+                <div style={{ color: "#fff", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.title}</div>
+                <div style={{ color: "#666", fontSize: 11, fontFamily: "'Bricolage Grotesque', sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.artist}</div>
               </div>
             </div>
           ))}
@@ -1055,12 +1055,12 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
               style={{ width: 100, height: 100, objectFit: "cover", border: "2px solid #000", flexShrink: 0 }} />
             <div style={{ flex: 1 }}>
               <div style={{ color: "#fff", fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 4 }}>{slot.selected.title}</div>
-              <div style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "'DM Sans', sans-serif" }}>{slot.selected.artist}</div>
+              <div style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif" }}>{slot.selected.artist}</div>
             </div>
           </div>
           {slot.selected.preview && <audio controls src={slot.selected.preview} style={{ width: "100%" }} />}
           <button onClick={() => onSelect(slot.index, null)}
-            style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.5)", borderRadius: 0, fontSize: 12, fontFamily: "'DM Sans', sans-serif", padding: "7px 0", cursor: "pointer", width: "100%" }}>
+            style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.5)", borderRadius: 0, fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", padding: "7px 0", cursor: "pointer", width: "100%" }}>
             Change
           </button>
         </div>
@@ -1133,19 +1133,19 @@ export default function App() {
 
         {/* ── Header ── */}
         <div style={{ padding: "32px 24px 0", maxWidth: 960, margin: "0 auto" }}>
-          <div style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>Remix Three Eras</div>
-          <div style={{ display: "inline-block", background: "#000", padding: "8px 20px", marginBottom: 16 }}>
-            <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(32px, 6vw, 56px)", fontWeight: 800, margin: 0, color: "#A237FF", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+          <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>Remix Three Eras</div>
+          <div style={{ padding: "32px 24px 0", maxWidth: 960, margin: "0 auto", textAlign: "center" }}>
+            <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(32px, 6vw, 56px)", fontWeight: 800, margin: 0, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
               Music Capsule
             </h1>
           </div>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 1.6, maxWidth: 500, marginBottom: 24 }}>
-            Select 3 tracks and their eras. Seal the Capsule to create your remix and share it.
+          <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#fff", fontSize: 14, lineHeight: 1.6, maxWidth: 500, marginBottom: 24, margin: "0 auto 24px" }}>
+          Select 3 tracks and then Seal The Capsule to recieve a visualizer and download your mix.Search by artist, song, or genre - add a year to narrow it down..
           </p>
 
           {/* Hero image */}
           <div style={{ position: "relative", marginBottom: 32, borderRadius: 0, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <img src="/hero.png" alt="Music Capsule example" style={{ width: "100%", display: "block", maxHeight: 320, objectFit: "cover", objectPosition: "center top" }}
+            <img src="/her-updated.png" alt="Music Capsule example" style={{ width: "100%", display: "block", maxHeight: 320, objectFit: "cover", objectPosition: "center top" }}
               onError={(e) => { e.currentTarget.style.display = "none"; }} />
             <div style={{ position: "absolute", top: 12, right: 12, background: "#C3FF00", padding: "4px 12px" }}>
               <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 800, color: "#000" }}>example</span>
@@ -1183,7 +1183,7 @@ export default function App() {
                     <img src={slot.selected?.cover} alt="" style={{ width: 48, height: 48, objectFit: "cover", flexShrink: 0 }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{slot.selected?.title}</div>
-                      <div style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'DM Sans', sans-serif", fontSize: 13 }}>{slot.selected?.artist}</div>
+                      <div style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13 }}>{slot.selected?.artist}</div>
                     </div>
                   </div>
                 ))}
@@ -1195,7 +1195,7 @@ export default function App() {
               <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>Card Name</div>
               <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
                 placeholder="Card Name" maxLength={20}
-                style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 0, color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: 15, padding: "11px 14px", width: "100%", boxSizing: "border-box", outline: "none", marginBottom: 14 }} />
+                style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, padding: "11px 14px", width: "100%", boxSizing: "border-box", outline: "none", marginBottom: 14 }} />
               <ShareCard slots={slots} userName={userName} />
             </div>
 
@@ -1216,7 +1216,7 @@ export default function App() {
         {/* Legacy.wav footer */}
         <div style={{ background: "#000", padding: "20px 24px", marginTop: 48, textAlign: "center" }}>
           <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#C3FF00", letterSpacing: "-0.01em" }}>Legacy.wav</div>
-          <div style={{ color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans', sans-serif", fontSize: 12, marginTop: 4 }}>music-time-capsule.vercel.app</div>
+          <div style={{ color: "rgba(255,255,255,0.25)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 4 }}>music-time-capsule.vercel.app</div>
         </div>
       </div>
     </>
