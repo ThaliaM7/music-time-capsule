@@ -100,8 +100,8 @@ function ShareCard({ slots, userName, theme }) {
   const [cardTheme, setCardTheme] = useState(theme || "purple");
 
   const themes = {
-    purple: { bg: "#9B4DFF", wave: "#000000", card: "#ffffff", cardText: "#000000", accent: "#9B4DFF", titleBox: "#000000", titleText: "#ffffff", labelBg: "#000000", labelText: "#ffffff" },
-    lime:   { bg: "#C8F135", wave: "#000000", card: "#C8F135", cardText: "#000000", accent: "#C8F135", titleBox: "#000000", titleText: "#C8F135", labelBg: "#000000", labelText: "#C8F135" },
+    purple: { bg: "#A237FF", wave: "#000000", card: "#ffffff", cardText: "#000000", accent: "#A237FF", titleBox: "#000000", titleText: "#ffffff", labelBg: "#000000", labelText: "#ffffff" },
+    lime:   { bg: "#C3FF00", wave: "#000000", card: "#C3FF00", cardText: "#000000", accent: "#C3FF00", titleBox: "#000000", titleText: "#C3FF00", labelBg: "#000000", labelText: "#C3FF00" },
   };
 
   // The exact wave path from Figma SVG (already in 1080x1920 space)
@@ -193,7 +193,7 @@ function ShareCard({ slots, userName, theme }) {
 
     // ── Header ──
     // "[Name]'s" small text
-    ctx.fillStyle = T.bg === "#000000" ? "#fff" : (T.bg === "#C8F135" ? "#000" : "#fff");
+    ctx.fillStyle = T.bg === "#000000" ? "#fff" : (T.bg === "#C3FF00" ? "#000" : "#fff");
     ctx.font = "500 52px 'Bricolage Grotesque', sans-serif";
     ctx.textAlign = "center";
     const nameText = userName ? `${userName}'s` : "My";
@@ -205,7 +205,7 @@ function ShareCard({ slots, userName, theme }) {
     const titleBoxY = 135;
     ctx.fillStyle = T.titleBox;
     ctx.fillRect(titleBoxX, titleBoxY, titleBoxW, titleBoxH);
-    ctx.strokeStyle = T.bg === "#C8F135" ? "#C8F135" : "#9B4DFF";
+    ctx.strokeStyle = T.bg === "#C3FF00" ? "#C3FF00" : "#A237FF";
     ctx.lineWidth = 3;
     ctx.strokeRect(titleBoxX, titleBoxY, titleBoxW, titleBoxH);
     ctx.fillStyle = T.titleText;
@@ -272,18 +272,18 @@ function ShareCard({ slots, userName, theme }) {
     });
 
     // ── Bottom branding box ──
-    const brandBoxW = 680, brandBoxH = 110;
+    const brandBoxW = 780, brandBoxH = 120;
     const brandBoxX = (W - brandBoxW) / 2;
     const brandBoxY = H - 220;
     ctx.fillStyle = "#000";
     ctx.fillRect(brandBoxX, brandBoxY, brandBoxW, brandBoxH);
     ctx.fillStyle = T.bg;
-    ctx.font = "800 72px 'Bricolage Grotesque', sans-serif";
+    ctx.font = "800 84px 'Bricolage Grotesque', sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("Legacy.wav", W / 2, brandBoxY + 82);
+    ctx.fillText("Legacy.wav", W / 2, brandBoxY + 94);
 
     // URL
-    ctx.fillStyle = T.bg === "#C8F135" ? "#000" : "#fff";
+    ctx.fillStyle = T.bg === "#C3FF00" ? "#000" : "#fff";
     ctx.font = "400 32px 'Bricolage Grotesque', sans-serif";
     ctx.fillText("music-time-capsule.vercel.app", W / 2, H - 60);
 
@@ -313,7 +313,7 @@ function ShareCard({ slots, userName, theme }) {
 
       {/* Theme picker */}
       <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 16 }}>
-        {[["purple", "#9B4DFF", "Purple"], ["lime", "#C8F135", "Lime"]].map(([id, color, label]) => (
+        {[["purple", "#A237FF", "Purple"], ["lime", "#C3FF00", "Lime"]].map(([id, color, label]) => (
           <div key={id} onClick={() => setCardTheme(id)}
             style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 8, border: `1px solid ${cardTheme === id ? color : "rgba(255,255,255,0.1)"}`, background: cardTheme === id ? color + "22" : "rgba(255,255,255,0.03)", cursor: "pointer", transition: "all 0.15s" }}>
             <div style={{ width: 14, height: 14, borderRadius: "50%", background: color, flexShrink: 0 }} />
