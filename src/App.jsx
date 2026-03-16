@@ -93,179 +93,44 @@ function Slider({ label, value, min, max, onChange, color, unit }) {
   );
 }
 
-// ── Share Card (PNG export, 9:16 portrait) ───────────────────────────────────
-function ShareCard({ slots, userName }) {
+// ── Share Card (Figma-matched design, 1080×1920) ──────────────────────────────
+function ShareCard({ slots, userName, theme }) {
   const canvasRef = useRef(null);
   const [exporting, setExporting] = useState(false);
-  const accents = ["#c084fc", "#67e8f9", "#86efac"];
-  const labelMap = { 0: "The Past", 1: "The Present", 2: "The Future" };
+  const [cardTheme, setCardTheme] = useState(theme || "purple");
 
-  async function loadImage(url) {
-    // Fetch via proxy to avoid canvas taint
-    const proxy = "https://corsproxy.io/?url=" + encodeURIComponent(url);
-    const res = await fetch(proxy);
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => { URL.revokeObjectURL(blobUrl); resolve(img); };
-      img.onerror = reject;
-      img.src = blobUrl;
-    });
-  }
+  const themes = {
+    purple: { bg: "#9B4DFF", wave: "#000000", card: "#ffffff", cardText: "#000000", accent: "#9B4DFF", titleBox: "#000000", titleText: "#ffffff", labelBg: "#000000", labelText: "#ffffff" },
+    lime:   { bg: "#C8F135", wave: "#000000", card: "#C8F135", cardText: "#000000", accent: "#C8F135", titleBox: "#000000", titleText: "#C8F135", labelBg: "#000000", labelText: "#C8F135" },
+  };
 
-  async function drawCard() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const W = 1080, H = 1920;
-    canvas.width = W; canvas.height = H;
-    const ctx = canvas.getContext("2d");
+  // The exact wave path from Figma SVG (already in 1080x1920 space)
+  const WAVE_PATH = "M1622.09 1372.2C1559.93 1336.65 1505.66 1231.69 1472.17 1170.25C1491.75 1274.59 1510.28 1373.25 1517.34 1476.52C1520.2 1518.35 1531.92 1675.67 1481.31 1688.83C1428.56 1702.55 1353.79 1549.8 1330.06 1508.53C1347.91 1622.82 1384.39 1893.24 1314.17 1989.27C1296.82 2012.99 1268.74 2019.85 1242.08 2008.46C1133.86 1962.24 1024.74 1716.01 979.666 1606.92C981.54 1667.21 991.948 1768.3 964.522 1822.22C955.111 1840.7 935.4 1845.69 917.965 1835.3C872.302 1808.05 830.459 1729.04 805.286 1681.09C756.856 1588.84 721.608 1494.29 682.87 1394.47C685.038 1470.31 694.544 1574.73 659.886 1641.81C647.555 1665.72 622.833 1674.01 598.949 1662.11C511.882 1618.69 423.732 1413.73 383.585 1321.04C380.62 1349.7 384.947 1415.36 357.453 1431.65C312.843 1458.1 239.219 1298.11 225.065 1266.72C146.764 1093.04 80.1611 856.12 54.996 667.461C47.9488 614.591 35.1707 502.918 61.7822 458.151C69.5341 445.102 84.3873 443.138 96.4241 450.859C134.63 475.355 168.242 540.585 188.838 582.046C189.65 583.712 192.483 583.891 192.346 582.381C188.73 536.724 184.223 492.492 184.608 446.371C184.993 400.25 187.914 314.546 219.371 280.495C233.758 264.922 254.493 263.573 272.573 272.895C360.208 318.132 447.632 523.47 488.397 616.926C481.648 540.709 463.284 404.041 495.272 334.298C504.042 315.168 524.253 309.405 541.976 319.803C632.573 372.928 745.611 673.339 782.41 777.289C783.082 781.518 784.813 783.901 786.121 779.776C784.275 703.959 783.682 595.633 821.956 531.211C840.387 500.216 874.266 491.331 906.56 508.566C972.435 543.735 1027.01 637.845 1067.62 704.408C1046.92 597.312 1026.78 492.613 1018.64 384.169C1015.33 340.232 1002.53 180.888 1053.38 164.712C1113.97 145.427 1211.36 360.388 1233.55 405.476C1226.71 342.335 1216.67 285.458 1213.67 224.625C1210.67 163.792 1206.07 53.9535 1240.11 0.186978C1253.45 -20.9179 1275.7 -26.8806 1297.45 -16.5519C1366.76 16.3341 1435.01 156.173 1470.88 226.189C1470.45 182.249 1458.55 84.9313 1489.32 52.6221C1520.09 20.3129 1572.44 110.889 1583.8 131.133C1675.67 294.488 1748.34 545.651 1782.64 730.053C1791.86 779.643 1831.65 1013.22 1775.86 1033.88C1744.76 1045.4 1703.93 972.759 1689.32 951.878C1704.77 1048.34 1735.14 1278.94 1684.2 1357.51C1670.12 1379.25 1645.91 1385.82 1622.09 1372.2Z";
+  const WAVE_PATH2 = "M102.278 1060.38C104.808 1083.48 108.808 1152.67 85.1851 1161.91C60.3503 1171.64 25.7768 1107.69 16.201 1087.48C-23.3233 1004.06 -48.2633 915.169 -58.4975 823.379C-61.0544 800.488 -64.9534 729.924 -40.7788 721.929C-15.3238 713.488 18.116 776.472 27.8495 797.031C67.231 880.148 92.2964 968.977 102.278 1060.38Z";
 
-    // Background — dark with gradient sweep
-    const bg = ctx.createLinearGradient(0, 0, W, H);
-    bg.addColorStop(0, "#0a0a0f");
-    bg.addColorStop(0.4, "#12082a");
-    bg.addColorStop(0.7, "#071820");
-    bg.addColorStop(1, "#080f0a");
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    // Accent glow blobs
-    const blobs = [
-      { x: 200, y: 400, color: "#c084fc", r: 400 },
-      { x: 880, y: 960, color: "#67e8f9", r: 350 },
-      { x: 300, y: 1500, color: "#86efac", r: 380 },
+  async function loadImageAsBlob(url) {
+    const proxies = [
+      "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
+      "https://corsproxy.io/?url=" + encodeURIComponent(url),
     ];
-    blobs.forEach(({ x, y, color, r }) => {
-      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-      g.addColorStop(0, color + "22");
-      g.addColorStop(1, "transparent");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    });
-
-    // Top label
-    ctx.fillStyle = "rgba(255,255,255,0.35)";
-    ctx.font = "bold 38px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("◈ MUSIC TIME CAPSULE", W / 2, 100);
-
-    // User name
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 72px monospace";
-    ctx.textAlign = "center";
-    const displayName = userName ? `${userName}'s` : "My";
-    ctx.fillText(displayName, W / 2, 210);
-    ctx.fillStyle = "#c084fc";
-    ctx.font = "bold 68px monospace";
-    ctx.fillText("Music Capsule", W / 2, 295);
-
-    // Divider
-    ctx.strokeStyle = "rgba(255,255,255,0.08)";
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(80, 340); ctx.lineTo(W - 80, 340); ctx.stroke();
-
-    // Load all cover images
-    const covers = await Promise.all(
-      slots.map(async (slot) => {
-        try { return await loadImage(slot.selected.cover); }
-        catch { return null; }
-      })
-    );
-
-    // Draw three track cards
-    const cardY = [380, 800, 1220];
-    const cardH = 380;
-    const cardX = 60;
-    const cardW = W - 120;
-    const coverSize = 280;
-
-    slots.forEach((slot, i) => {
-      const y = cardY[i];
-      const accent = accents[i];
-
-      // Card background
-      ctx.save();
-      ctx.beginPath();
-      roundRect(ctx, cardX, y, cardW, cardH, 28);
-      ctx.fillStyle = "rgba(255,255,255,0.04)";
-      ctx.fill();
-      ctx.strokeStyle = accent + "55";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.restore();
-
-      // Era label pill
-      ctx.save();
-      ctx.beginPath();
-      roundRect(ctx, cardX + 28, y + 28, 180, 44, 22);
-      ctx.fillStyle = accent + "22";
-      ctx.fill();
-      ctx.restore();
-      ctx.fillStyle = accent;
-      ctx.font = "bold 22px monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(labelMap[i].toUpperCase(), cardX + 52, y + 57);
-
-      // Album cover
-      const coverX = cardX + 28;
-      const coverY = y + 88;
-      if (covers[i]) {
-        ctx.save();
-        ctx.beginPath();
-        roundRect(ctx, coverX, coverY, coverSize, coverSize, 16);
-        ctx.clip();
-        ctx.drawImage(covers[i], coverX, coverY, coverSize, coverSize);
-        ctx.restore();
-        // Cover border
-        ctx.save();
-        ctx.beginPath();
-        roundRect(ctx, coverX, coverY, coverSize, coverSize, 16);
-        ctx.strokeStyle = accent + "88";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Track info
-      const textX = coverX + coverSize + 32;
-      const textW = cardW - coverSize - 80;
-
-      // Song title
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 38px sans-serif";
-      ctx.textAlign = "left";
-      wrapText(ctx, slot.selected.title, textX, coverY + 50, textW, 46);
-
-      // Artist
-      ctx.fillStyle = "rgba(255,255,255,0.55)";
-      ctx.font = "32px sans-serif";
-      ctx.fillText(slot.selected.artist, textX, coverY + 160);
-
-      // Year
-      if (slot.selected.year) {
-        ctx.save();
-        ctx.beginPath();
-        roundRect(ctx, textX, coverY + 200, 130, 50, 25);
-        ctx.fillStyle = accent + "33";
-        ctx.fill();
-        ctx.restore();
-        ctx.fillStyle = accent;
-        ctx.font = "bold 28px monospace";
-        ctx.fillText(slot.selected.year, textX + 20, coverY + 234);
-      }
-    });
-
-    // Bottom branding
-    ctx.fillStyle = "rgba(255,255,255,0.2)";
-    ctx.font = "28px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("music-time-capsule.vercel.app", W / 2, H - 60);
-
-    return canvas;
+    for (const proxy of proxies) {
+      try {
+        const res = await fetch(proxy);
+        if (!res.ok) continue;
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        return await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => { URL.revokeObjectURL(blobUrl); resolve(img); };
+          img.onerror = reject;
+          img.src = blobUrl;
+        });
+      } catch { continue; }
+    }
+    return null;
   }
 
-  function roundRect(ctx, x, y, w, h, r) {
+  function drawRoundRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + w - r, y);
@@ -279,46 +144,187 @@ function ShareCard({ slots, userName }) {
     ctx.closePath();
   }
 
-  function wrapText(ctx, text, x, y, maxW, lineH) {
+  function wrapText(ctx, text, x, y, maxW, lineH, maxLines) {
     const words = text.split(" ");
-    let line = "";
-    let lineCount = 0;
+    let line = "", lines = [];
     for (const word of words) {
       const test = line + word + " ";
-      if (ctx.measureText(test).width > maxW && line !== "") {
-        ctx.fillText(line.trim(), x, y + lineCount * lineH);
+      if (ctx.measureText(test).width > maxW && line) {
+        lines.push(line.trim());
         line = word + " ";
-        lineCount++;
-        if (lineCount >= 2) break;
-      } else {
-        line = test;
-      }
+        if (lines.length >= maxLines) break;
+      } else line = test;
     }
-    if (lineCount < 2) ctx.fillText(line.trim(), x, y + lineCount * lineH);
+    if (lines.length < maxLines) lines.push(line.trim());
+    lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineH));
+    return lines.length;
+  }
+
+  async function drawCard(t) {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const W = 1080, H = 1920;
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d");
+    const T = themes[t];
+
+    // Background
+    ctx.fillStyle = T.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Wave shapes from Figma — save/restore to apply clipping transform
+    ctx.save();
+    // Apply the same rotation transform from the SVG clip: rotate(-15.6891deg) around (-192, 389.443)
+    ctx.translate(-192, 389.443);
+    ctx.rotate(-15.6891 * Math.PI / 180);
+    ctx.translate(192, -389.443);
+    ctx.fillStyle = T.wave;
+    const p1 = new Path2D(WAVE_PATH);
+    ctx.fill(p1);
+    const p2 = new Path2D(WAVE_PATH2);
+    ctx.fill(p2);
+    ctx.restore();
+
+    // Load covers
+    const covers = await Promise.all(slots.map(s => loadImageAsBlob(s.selected.cover)));
+
+    // ── Header ──
+    // "[Name]'s" small text
+    ctx.fillStyle = T.bg === "#000000" ? "#fff" : (T.bg === "#C8F135" ? "#000" : "#fff");
+    ctx.font = "500 52px 'Bricolage Grotesque', sans-serif";
+    ctx.textAlign = "center";
+    const nameText = userName ? `${userName}'s` : "My";
+    ctx.fillText(nameText, W / 2, 115);
+
+    // "Music Capsule" in black box
+    const titleBoxW = 860, titleBoxH = 130;
+    const titleBoxX = (W - titleBoxW) / 2;
+    const titleBoxY = 135;
+    ctx.fillStyle = T.titleBox;
+    ctx.fillRect(titleBoxX, titleBoxY, titleBoxW, titleBoxH);
+    ctx.fillStyle = T.titleText;
+    ctx.font = "800 96px 'Bricolage Grotesque', sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Music Capsule", W / 2, titleBoxY + 96);
+
+    // ── Track cards ──
+    const cardX = 60, cardW = W - 120;
+    const cardYs = [330, 740, 1150];
+    const cardH = 360;
+    const coverSize = 260;
+    const labelMap = ["the past", "the present", "the future"];
+
+    slots.forEach((slot, i) => {
+      const y = cardYs[i];
+
+      // Card background
+      ctx.fillStyle = T.card;
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 3;
+      drawRoundRect(ctx, cardX, y, cardW, cardH, 0);
+      ctx.fill();
+      ctx.stroke();
+
+      // Era label pill
+      const labelPadX = 20, labelPadY = 10;
+      const labelText = labelMap[i];
+      ctx.font = "700 28px 'Bricolage Grotesque', sans-serif";
+      const labelW = ctx.measureText(labelText).width + labelPadX * 2;
+      ctx.fillStyle = T.labelBg;
+      ctx.fillRect(cardX + 24, y + 20, labelW, 46);
+      ctx.fillStyle = T.labelText;
+      ctx.textAlign = "left";
+      ctx.fillText(labelText, cardX + 24 + labelPadX, y + 20 + 33);
+
+      // Album cover
+      const coverX = cardX + 24;
+      const coverY = y + 80;
+      if (covers[i]) {
+        ctx.drawImage(covers[i], coverX, coverY, coverSize, coverSize);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(coverX, coverY, coverSize, coverSize);
+      } else {
+        ctx.fillStyle = "#000";
+        ctx.fillRect(coverX, coverY, coverSize, coverSize);
+      }
+
+      // Track info
+      const textX = coverX + coverSize + 30;
+      const textMaxW = cardW - coverSize - 80;
+
+      // Song title — large bold
+      ctx.fillStyle = T.cardText;
+      ctx.font = "800 62px 'Bricolage Grotesque', sans-serif";
+      ctx.textAlign = "left";
+      wrapText(ctx, slot.selected.title, textX, coverY + 68, textMaxW, 70, 2);
+
+      // Year
+      ctx.fillStyle = T.cardText;
+      ctx.font = "400 38px 'Bricolage Grotesque', sans-serif";
+      ctx.fillText(slot.selected.year || "", textX, coverY + 175);
+
+      // Artist
+      ctx.font = "400 38px 'Bricolage Grotesque', sans-serif";
+      ctx.fillText(slot.selected.artist, textX, coverY + 220);
+    });
+
+    // ── Bottom branding box ──
+    const brandBoxW = 680, brandBoxH = 110;
+    const brandBoxX = (W - brandBoxW) / 2;
+    const brandBoxY = H - 220;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(brandBoxX, brandBoxY, brandBoxW, brandBoxH);
+    ctx.fillStyle = T.bg;
+    ctx.font = "800 72px 'Bricolage Grotesque', sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Legacy.wav", W / 2, brandBoxY + 82);
+
+    // URL
+    ctx.fillStyle = T.bg === "#C8F135" ? "#000" : "#fff";
+    ctx.font = "400 32px 'Bricolage Grotesque', sans-serif";
+    ctx.fillText("music-time-capsule.vercel.app", W / 2, H - 60);
+
+    return canvas;
   }
 
   async function handleExport() {
     setExporting(true);
     try {
-      const canvas = await drawCard();
+      // Load Bricolage Grotesque font first
+      await document.fonts.load("800 96px 'Bricolage Grotesque'");
+      await document.fonts.load("400 38px 'Bricolage Grotesque'");
+      const canvas = await drawCard(cardTheme);
       const link = document.createElement("a");
-      link.download = `${userName ? userName.replace(/\s+/g, "-") : "my"}-music-capsule.png`;
+      link.download = `${userName ? userName.replace(/\s+/g, "-").toLowerCase() : "my"}-music-capsule.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     } catch (e) {
-      console.error("Export failed:", e);
+      console.error("Export error:", e);
     }
     setExporting(false);
   }
 
   return (
-    <div style={{ textAlign: "center", marginTop: 32 }}>
+    <div style={{ textAlign: "center", marginTop: 32, maxWidth: 480, margin: "32px auto 0" }}>
       <canvas ref={canvasRef} style={{ display: "none" }} />
+
+      {/* Theme picker */}
+      <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 16 }}>
+        {[["purple", "#9B4DFF", "Purple"], ["lime", "#C8F135", "Lime"]].map(([id, color, label]) => (
+          <div key={id} onClick={() => setCardTheme(id)}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 8, border: `1px solid ${cardTheme === id ? color : "rgba(255,255,255,0.1)"}`, background: cardTheme === id ? color + "22" : "rgba(255,255,255,0.03)", cursor: "pointer", transition: "all 0.15s" }}>
+            <div style={{ width: 14, height: 14, borderRadius: "50%", background: color, flexShrink: 0 }} />
+            <span style={{ color: cardTheme === id ? color : "#666", fontFamily: "'Space Mono', monospace", fontSize: 11, fontWeight: 700 }}>{label}</span>
+          </div>
+        ))}
+      </div>
+
       <button onClick={handleExport} disabled={exporting}
-        style={{ background: exporting ? "rgba(255,255,255,0.03)" : "linear-gradient(135deg, #c084fc44, #67e8f944)", border: "1px solid rgba(192,132,252,0.4)", color: exporting ? "#444" : "#c084fc", borderRadius: 10, fontFamily: "'Space Mono', monospace", fontSize: 12, fontWeight: 700, padding: "12px 28px", cursor: exporting ? "not-allowed" : "pointer", transition: "all 0.2s", letterSpacing: "0.08em" }}>
-        {exporting ? "Generating card..." : "Download Card (PNG)"}
+        style={{ background: exporting ? "rgba(255,255,255,0.03)" : "rgba(155,77,255,0.15)", border: "1px solid rgba(155,77,255,0.4)", color: exporting ? "#444" : "#c084fc", borderRadius: 10, fontFamily: "'Space Mono', monospace", fontSize: 12, fontWeight: 700, padding: "12px 28px", cursor: exporting ? "not-allowed" : "pointer", transition: "all 0.2s", letterSpacing: "0.08em" }}>
+        {exporting ? "Generating..." : "Download Card (PNG)"}
       </button>
-      {exporting && <div style={{ color: "#555", fontFamily: "'DM Sans', sans-serif", fontSize: 12, marginTop: 8 }}>Loading album art and drawing card...</div>}
+      {exporting && <div style={{ color: "#555", fontFamily: "'DM Sans', sans-serif", fontSize: 12, marginTop: 8 }}>Loading fonts and album art...</div>}
     </div>
   );
 }
@@ -474,7 +480,7 @@ function ReceiverView({ slots }) {
   return (
     <div style={{ minHeight: "100vh", background: "#0a0a0f", color: "#fff", padding: "48px 24px", boxSizing: "border-box" }}>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
       <div style={{ textAlign: "center", marginBottom: 40 }}>
         <div style={{ fontSize: 11, fontFamily: "'Space Mono', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 12, textTransform: "uppercase" }}>◈ Music Time Capsule</div>
         <h1 style={{ fontFamily: "'Space Mono', monospace", fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 700, margin: 0, background: "linear-gradient(135deg, #c084fc, #67e8f9, #86efac)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.15 }}>
@@ -1015,7 +1021,7 @@ export default function App() {
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
       <div style={{ minHeight: "100vh", background: "#0a0a0f", color: "#fff", padding: "48px 24px", boxSizing: "border-box" }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div style={{ fontSize: 11, fontFamily: "'Space Mono', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 12, textTransform: "uppercase" }}>◈ Music Time Capsule</div>
@@ -1042,17 +1048,12 @@ export default function App() {
         )}
         {sealed && (
           <div style={{ marginTop: 48 }}>
-            {/* Name input for card */}
-            <div style={{ textAlign: "center", marginBottom: 24 }}>
+            {/* Name input for share card */}
+            <div style={{ textAlign: "center", marginBottom: 28, marginTop: 8 }}>
               <div style={{ fontSize: 11, fontFamily: "'Space Mono', monospace", letterSpacing: "0.2em", color: "#555", marginBottom: 10, textTransform: "uppercase" }}>◈ Your name on the card</div>
-              <input
-                type="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                placeholder="e.g. Thalia"
-                maxLength={24}
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, color: "#fff", fontFamily: "'Space Mono', monospace", fontSize: 16, fontWeight: 700, padding: "10px 16px", width: 220, outline: "none", textAlign: "center" }}
-              />
+              <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
+                placeholder="e.g. Thalia" maxLength={20}
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8, color: "#fff", fontFamily: "'Space Mono', monospace", fontSize: 16, fontWeight: 700, padding: "10px 16px", width: 200, outline: "none", textAlign: "center" }} />
             </div>
             <VinylCapsuleCard slots={slots} onShare={handleShare} />
             <ShareCard slots={slots} userName={userName} />
