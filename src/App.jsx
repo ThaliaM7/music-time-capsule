@@ -1173,18 +1173,18 @@ export default function App() {
 
         {/* ── Sealed section ── */}
         {sealed && (
-          <div style={{ padding: "32px 64px", maxWidth: 960, margin: "0 auto" }}>
+          <div style={{ padding: "32px 16px", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
 
             {/* Your Capsule — three cover grid */}
             <div style={{ marginBottom: 32 }}>
               <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 16 }}>Your Capsule</div>
-              <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8, WebkitOverflowScrolling: "touch" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {slots.map((slot, i) => (
-                  <div key={i} style={{ flex: "0 0 200px", display: "flex", flexDirection: "column", gap: 16 }}>
-                    <img src={slot.selected?.cover} alt="" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", border: "1px solid rgba(255,255,255,0.8)", display: "block" }} />
-                    <div>
-                      <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 24, fontWeight: 800, lineHeight: 1.2, marginBottom: 2, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{slot.selected?.title}</div>
-                      <div style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, fontWeight: 400 }}>{slot.selected?.artist}</div>
+                  <div key={i} style={{ display: "flex", flexDirection: "row", gap: 16, alignItems: "center" }}>
+                    <img src={slot.selected?.cover} alt="" style={{ width: 80, height: 80, flexShrink: 0, objectFit: "cover", border: "1px solid rgba(255,255,255,0.8)", display: "block" }} />
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 20, fontWeight: 800, lineHeight: 1.2, marginBottom: 2, textAlign: "left" }}>{slot.selected?.title}</div>
+                      <div style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, fontWeight: 400, textAlign: "left" }}>{slot.selected?.artist}</div>
                     </div>
                   </div>
                 ))}
