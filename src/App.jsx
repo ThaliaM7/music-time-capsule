@@ -1018,7 +1018,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       <input type="number" min="1900" max="2099" value={slot.year}
         onChange={(e) => onYearChange(slot.index, e.target.value)}
         placeholder="Year (optional)"
-        style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, padding: "10px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
+        style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.8)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, padding: "10px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
 
       {/* Search button */}
       <button onClick={() => onSearch(slot.index)} disabled={(!slot.year && !slot.query) || slot.loading}
@@ -1031,7 +1031,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       {/* Results */}
       {slot.results.length > 0 && !slot.selected && (
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <div style={{ fontSize: 12, fontWeight: 500, color: "#FFFFFF", fontFamily: "'Bricolage Grotesque', sans-serif", letterSpacing: "0.12em", textTransform: "Capitalize", marginBottom: 4 }}>Pick a track</div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "#FFFFFF", fontFamily: "'Bricolage Grotesque', sans-serif", letterSpacing: "0.05em", textTransform: "Capitalize", marginBottom: 4 }}>Pick a track</div>
           {slot.results.map((song) => (
             <div key={song.id} onClick={() => onSelect(slot.index, song)}
               style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.04)", borderRadius: 0, padding: "7px 10px", cursor: "pointer", border: "1px solid rgba(255,255,255,0.06)" }}
@@ -1054,7 +1054,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
             <img src={slot.selected.cover} alt={slot.selected.album}
               style={{ width: 80, height: 80, objectFit: "cover", border: "2px solid rgba(255,255,255,0.1)", flexShrink: 0 }} />
             <div style={{ flex: 1, textAlign: "left" }}>
-              <div style={{ color: "#fff", fontSize: 20, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 4 }}>{slot.selected.title}</div>
+              <div style={{ color: "#fff", fontSize: 20, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 2 }}>{slot.selected.title}</div>
               <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 400 }}>{slot.selected.artist}</div>
             </div>
           </div>
