@@ -1172,17 +1172,17 @@ export default function App() {
 
         {/* ── Sealed section ── */}
         {sealed && (
-          <div style={{ padding: "32px 24px", maxWidth: 960, margin: "0 auto" }}>
+          <div style={{ padding: "32px 48px", maxWidth: 960, margin: "0 auto" }}>
 
             {/* Your Capsule — three cover grid */}
             <div style={{ marginBottom: 32 }}>
-              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Your Capsule</div>
+              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgb(255, 255, 255)", letterSpacing: "0.08em", textTransform: "capitalize", marginBottom: 16 }}>Your Capsule</div>
               <div style={{ display: "flex", gap: 12 }}>
                 {slots.map((slot, i) => (
-                  <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+                  <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
                     <img src={slot.selected?.cover} alt="" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", border: "1px solid rgba(255,255,255,0.8)", display: "block" }} />
                     <div>
-                      <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, fontWeight: 800, lineHeight: 1.2, marginBottom: 3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{slot.selected?.title}</div>
+                      <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 24, fontWeight: 800, lineHeight: 1.2, marginBottom: 2, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{slot.selected?.title}</div>
                       <div style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, fontWeight: 400 }}>{slot.selected?.artist}</div>
                     </div>
                   </div>
@@ -1192,7 +1192,7 @@ export default function App() {
 
             {/* Card name input + theme + download */}
             <div style={{ marginBottom: 32, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>Card Name</div>
+              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgb(255, 255, 255)", letterSpacing: "0.08em", textTransform: "capitalize", marginBottom: 12 }}>Card Name</div>
               <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
                 placeholder="Card Name" maxLength={20}
                 style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, padding: "11px 14px", width: "100%", boxSizing: "border-box", outline: "none", marginBottom: 14 }} />
