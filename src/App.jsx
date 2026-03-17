@@ -559,7 +559,7 @@ function playVinylScratch() {
 
 // ── Crossfade Mixer ───────────────────────────────────────────────────────────
 function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange }) {
-  const accentMap = { 0: "#c084fc", 1: "#67e8f9", 2: "#86efac" };
+  const accentMap = { 0: "#C3FF00", 1: "#A237FF", 2: "#FFFFFF" };
   const labelMap = { 0: "The Past", 1: "The Present", 2: "The Future" };
 
   const [playing, setPlaying] = useState(false);
@@ -956,12 +956,12 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
           return (
             <div key={slot.index} style={{ background: "#111117", border: `1px solid ${isActive ? accent : "rgba(255,255,255,0.06)"}`, padding: 20, transition: "border-color 0.4s" }}>
               <div style={{ textAlign: "center", marginBottom: 16 }}>
-                <div style={{ fontSize: 11, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+                <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 4 }}>
                   {labelMap[slot.index]}{isActive && <span style={{ color: LIME, marginLeft: 8 }}>● Now</span>}
                 </div>
                 <img src={slot.selected.cover} alt="" style={{ width: 120, height: 120, objectFit: "cover", border: `2px solid ${isActive ? LIME : "rgba(255,255,255,0.8)"}`, display: "block", margin: "0 auto 12px", transition: "border-color 0.4s" }} />
-                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 4 }}>{slot.selected.title}</div>
-                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: isActive ? 10 : 0 }}>{slot.selected.artist}</div>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 20, fontWeight: 800, color: "#fff", marginBottom: 2 }}>{slot.selected.title}</div>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.45)", marginBottom: isActive ? 10 : 0 }}>{slot.selected.artist}</div>
                 {isActive && (
                   <div style={{ height: 2, background: "rgba(255,255,255,0.08)", marginTop: 8 }}>
                     <div style={{ height: "100%", width: `${progress * 100}%`, background: LIME, transition: "width 0.1s linear" }} />
