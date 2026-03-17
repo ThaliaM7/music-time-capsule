@@ -899,13 +899,13 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
   return (
     <div>
       {/* ── Play + Export ── */}
-      <div style={{ textAlign: "center", marginBottom: 28 }}>
-        <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Crossfade Mixer</div>
-        <div style={{ fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgba(255,255,255,0.35)", marginBottom: 16 }}>
+      <div style={{ textAlign: "center", marginBottom: 48 }}>
+        <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 12 }}>Crossfade Mixer</div>
+        <div style={{ fontSize: 14, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", marginBottom: 36 }}>
           Press play to listen or customize your mix using the settings below.
         </div>
         <button onClick={playing ? stopPlayback : startPlayback}
-          style={{ background: "#fff", color: "#000", border: "none", borderRadius: "50%", width: 64, height: 64, fontSize: 22, cursor: "pointer", transition: "all 0.2s", marginBottom: 20, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+          style={{ background: "#fff", color: "#000", border: "none", borderRadius: "50%", width: 64, height: 64, fontSize: 22, cursor: "pointer", transition: "all 0.2s", marginBottom: 36, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
           {playing ? "⏸" : "▶"}
         </button>
 
@@ -1172,11 +1172,11 @@ export default function App() {
 
         {/* ── Sealed section ── */}
         {sealed && (
-          <div style={{ padding: "32px 48px", maxWidth: 960, margin: "0 auto" }}>
+          <div style={{ padding: "32px 64px", maxWidth: 960, margin: "0 auto" }}>
 
             {/* Your Capsule — three cover grid */}
             <div style={{ marginBottom: 32 }}>
-              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgb(255, 255, 255)", letterSpacing: "0.08em", textTransform: "capitalize", marginBottom: 16 }}>Your Capsule</div>
+              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 16 }}>Your Capsule</div>
               <div style={{ display: "flex", gap: 12 }}>
                 {slots.map((slot, i) => (
                   <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1192,7 +1192,7 @@ export default function App() {
 
             {/* Card name input + theme + download */}
             <div style={{ marginBottom: 32, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgb(255, 255, 255)", letterSpacing: "0.08em", textTransform: "capitalize", marginBottom: 12 }}>Card Name</div>
+              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 12 }}>Card Name</div>
               <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
                 placeholder="Card Name" maxLength={20}
                 style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, padding: "11px 14px", width: "100%", boxSizing: "border-box", outline: "none", marginBottom: 14 }} />
@@ -1216,8 +1216,8 @@ export default function App() {
         )}
 
         {/* Legacy.wav footer */}
-        <div style={{ background: "#000", padding: "20px 24px", marginTop: 48, textAlign: "center" }}>
-          <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#C3FF00", letterSpacing: "-0.01em" }}>Legacy.wav</div>
+        <div style={{ background: "#C3FF00", padding: "20px 24px", marginTop: 48, textAlign: "center" }}>
+          <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#000000", letterSpacing: "-0.01em" }}>Legacy.wav</div>
           <div style={{ color: "rgba(255,255,255,0.8)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 4 }}>music-time-capsule.vercel.app</div>
         </div>
       </div>
