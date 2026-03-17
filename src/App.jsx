@@ -1133,8 +1133,8 @@ export default function App() {
       <div style={{ minHeight: "100vh", background: "#0d0d0d", color: "#fff", boxSizing: "border-box" }}>
 
         {/* ── Header ── */}
-        <div style={{ padding: "32px 16px 0", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
-          <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "capitalize" }}>Remix Three Eras</div>
+        <div style={{ padding: "72px 16px 0", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
+          <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", letterSpacing: "normal", marginBottom: 8, textTransform: "capitalize" }}>Remix Three Eras</div>
           <div style={{ display: "inline-block", background: "#A237FF", padding: "8px 24px", marginBottom: 16, maxWidth: "fit-content" }}>
             <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(32px, 6vw, 56px)", fontWeight: 800, margin: 0, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
               Music Capsule
