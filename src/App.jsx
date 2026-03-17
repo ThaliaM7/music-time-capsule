@@ -1164,7 +1164,7 @@ export default function App() {
           {/* ── Seal button ── */}
           <div style={{ marginTop: 24, marginBottom: 0 }}>
             <button disabled={!allSelected} onClick={() => setSealed(true)}
-              style={{ width: "100%", background: allSelected ? "#A237FF" : "rgba(255,255,255,0.06)", color: allSelected ? "#fff" : "#444", border: "none", borderRadius: 0, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 20, fontWeight: 800, padding: "18px 0", cursor: allSelected ? "pointer" : "not-allowed", letterSpacing: "0.02em", transition: "all 0.2s" }}>
+              style={{ width: "100%", background: allSelected ? "#A237FF" : "rgba(255, 255, 255, 0)", color: allSelected ? "#fff" : "#444", border: "none", borderRadius: 0, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 20, fontWeight: 800, padding: "18px 0", cursor: allSelected ? "pointer" : "not-allowed", letterSpacing: "0.02em", transition: "all 0.2s" }}>
               {allSelected ? "Seal The Capsule" : "Select a song in each era to continue"}
             </button>
           </div>
@@ -1174,16 +1174,16 @@ export default function App() {
         {sealed && (
           <div style={{ padding: "32px 24px", maxWidth: 960, margin: "0 auto" }}>
 
-            {/* Your Capsule track list */}
+            {/* Your Capsule — three cover grid */}
             <div style={{ marginBottom: 32 }}>
-              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>Your Capsule</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Your Capsule</div>
+              <div style={{ display: "flex", gap: 12 }}>
                 {slots.map((slot, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "#111117", borderLeft: `4px solid ${accentMap[i]}`, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                    <img src={slot.selected?.cover} alt="" style={{ width: 48, height: 48, objectFit: "cover", flexShrink: 0 }} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{slot.selected?.title}</div>
-                      <div style={{ color: "rgba(255,255,255,0.45)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13 }}>{slot.selected?.artist}</div>
+                  <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+                    <img src={slot.selected?.cover} alt="" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", border: "1px solid rgba(255,255,255,0.8)", display: "block" }} />
+                    <div>
+                      <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, fontWeight: 800, lineHeight: 1.2, marginBottom: 3, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{slot.selected?.title}</div>
+                      <div style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, fontWeight: 400 }}>{slot.selected?.artist}</div>
                     </div>
                   </div>
                 ))}
@@ -1199,9 +1199,11 @@ export default function App() {
               <ShareCard slots={slots} userName={userName} />
             </div>
 
-            {/* Share link button */}
-            <div style={{ marginBottom: 32 }}>
-              <VinylCapsuleCard slots={slots} onShare={handleShare} />
+            {/* Share link */}
+            <div style={{ marginBottom: 32, textAlign: "center" }}>
+              <button onClick={handleShare} style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", color: "#fff", borderRadius: 0, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, fontWeight: 600, padding: "14px 40px", cursor: "pointer", letterSpacing: "0.02em", transition: "all 0.2s" }}>
+                Share Capsule
+              </button>
             </div>
 
             {/* Crossfade Mixer */}
