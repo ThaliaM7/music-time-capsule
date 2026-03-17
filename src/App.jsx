@@ -78,8 +78,8 @@ function Slider({ label, value, min, max, onChange, color, unit }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ color: "#555", fontFamily: "'Bricolage Grotesque', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
-        <div style={{ color, fontFamily: "'Bricolage Grotesque', monospace", fontSize: 12, fontWeight: 700 }}>{displayValue}</div>
+        <div style={{ color: "#FFFFFF", fontFamily: "'Bricolage Grotesque', monospace", fontSize: 12, letterSpacing: "normal", textTransform: "capitalize" }}>{label}</div>
+        <div style={{ color, fontFamily: "'Bricolage Grotesque', monospace", fontSize: 12, fontWeight: 800 }}>{displayValue}</div>
       </div>
       <div style={{ position: "relative", height: 20, display: "flex", alignItems: "center" }}>
         <div style={{ position: "absolute", width: "100%", height: 4, borderRadius: 2, background: "rgba(255,255,255,0.08)" }} />
@@ -339,7 +339,7 @@ function ShareCard({ slots, userName, theme }) {
 // ── Vinyl Card ────────────────────────────────────────────────────────────────
 function VinylCapsuleCard({ slots, onShare, shared = false }) {
   const [copied, setCopied] = useState(false);
-  const accentMap = { 0: "#C3FF00", 1: "#A237FF", 2: "#FFFFFF" };
+  const accentMap = { 0: "#C3FF00", 1: "#C3FF00", 2: "#C3FF00" };
 
   function handleShare() { onShare(); setCopied(true); setTimeout(() => setCopied(false), 2000); }
 
@@ -559,7 +559,7 @@ function playVinylScratch() {
 
 // ── Crossfade Mixer ───────────────────────────────────────────────────────────
 function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange }) {
-  const accentMap = { 0: "#C3FF00", 1: "#A237FF", 2: "#FFFFFF" };
+  const accentMap = { 0: "#C3FF00", 1: "#C3FF00", 2: "#C3FF00" };
   const labelMap = { 0: "The Past", 1: "The Present", 2: "The Future" };
 
   const [playing, setPlaying] = useState(false);
@@ -956,7 +956,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
           return (
             <div key={slot.index} style={{ background: "#111117", border: `1px solid ${isActive ? accent : "rgba(255,255,255,0.06)"}`, padding: 20, transition: "border-color 0.4s" }}>
               <div style={{ textAlign: "center", marginBottom: 16 }}>
-                <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 4 }}>
+                <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 8 }}>
                   {labelMap[slot.index]}{isActive && <span style={{ color: LIME, marginLeft: 8 }}>● Now</span>}
                 </div>
                 <img src={slot.selected.cover} alt="" style={{ width: 120, height: 120, objectFit: "cover", border: `2px solid ${isActive ? LIME : "rgba(255,255,255,0.8)"}`, display: "block", margin: "0 auto 12px", transition: "border-color 0.4s" }} />
