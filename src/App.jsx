@@ -927,10 +927,10 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
 
       {/* ── Mixing Settings / Transition pickers ── */}
       <div style={{ marginBottom: 28, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Mixing Settings</div>
+        <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 24 }}>Mixing Settings</div>
         {[0, 1].map((handoff) => (
           <div key={handoff} style={{ marginBottom: handoff === 0 ? 20 : 0 }}>
-            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: 8 }}>
+            <div style={{ color: "rgb(255, 255, 255)", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: 8, textAlign: "left"}}>
               Track {handoff + 1} → Track {handoff + 2}
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -938,7 +938,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
                 const active = transitions[handoff] === t.id;
                 return (
                   <button key={t.id} onClick={() => setTransitions((prev) => ({ ...prev, [handoff]: t.id }))}
-                    style={{ background: active ? PURPLE : "transparent", color: active ? "#fff" : "rgba(255,255,255,0.4)", border: `1.5px solid ${active ? PURPLE : "rgba(255,255,255,0.15)"}`, borderRadius: 4, padding: "6px 14px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: active ? 700 : 400, cursor: "pointer", transition: "all 0.15s" }}>
+                    style={{ background: active ? PURPLE : "transparent", color: active ? "#fff" : "rgb(255, 255, 255)", border: `1px solid ${active ? PURPLE : "rgb(255, 255, 255)"}`, padding: "6px 14px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: active ? 700 : 400, cursor: "pointer", transition: "all 0.15s" }}>
                     {t.label}
                   </button>
                 );
@@ -1222,7 +1222,7 @@ export default function App() {
           <div style={{ display: "inline-block", background: "#C3FF00", padding: "10px 32px" }}>
             <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.01em" }}>Legacy.wav</div>
           </div>
-          <div style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 12 }}>music-time-capsule.vercel.app</div>
+          <div style={{ color: "rgb(255, 255, 255)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 8 }}>music-time-capsule.vercel.app</div>
         </div>
       </div>
     </>
