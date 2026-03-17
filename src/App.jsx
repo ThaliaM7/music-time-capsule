@@ -993,7 +993,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
   return (
     <div style={{ flex: 1, minWidth: 280, display: "flex", flexDirection: "column", gap: 12, background: "#111117", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 0, padding: 20 }}>
       {/* Era label */}
-      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", marginBottom: 4 }}>{labelMap[slot.index]}</div>
+      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "normal", marginBottom: 4 }}>{labelMap[slot.index]}</div>
 
       {/* Search input */}
       <input type="text" value={slot.query}
@@ -1007,7 +1007,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
           const selected = slot.query === chip.query;
           return (
             <div key={chip.query} onClick={() => onYearChange(slot.index, slot.year, chip.query)}
-              style={{ background: selected ? PURPLE : "transparent", border: `1.5px solid ${selected ? PURPLE : "rgba(255,255,255,0.25)"}`, borderRadius: 4, padding: "4px 10px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: selected ? 700 : 400, color: selected ? "#fff" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.15s" }}>
+              style={{ background: selected ? PURPLE : "transparent", border: `1.5px solid ${selected ? PURPLE : "rgba(255,255,255,0.8)"}`, padding: "4px 10px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: selected ? 700 : 400, color: selected ? "#fff" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.15s" }}>
               {chip.label}
             </div>
           );
@@ -1018,7 +1018,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       <input type="number" min="1900" max="2099" value={slot.year}
         onChange={(e) => onYearChange(slot.index, e.target.value)}
         placeholder="Year (optional)"
-        style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, padding: "10px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
+        style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, padding: "10px 14px", width: "100%", boxSizing: "border-box", outline: "none" }} />
 
       {/* Search button */}
       <button onClick={() => onSearch(slot.index)} disabled={(!slot.year && !slot.query) || slot.loading}
@@ -1050,17 +1050,17 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       {/* Selected state — matches Group 7 design */}
       {slot.selected && (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+          <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
             <img src={slot.selected.cover} alt={slot.selected.album}
-              style={{ width: 100, height: 100, objectFit: "cover", border: "2px solid #000", flexShrink: 0 }} />
-            <div style={{ flex: 1 }}>
-              <div style={{ color: "#fff", fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 4 }}>{slot.selected.title}</div>
-              <div style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif" }}>{slot.selected.artist}</div>
+              style={{ width: 80, height: 80, objectFit: "cover", border: "2px solid rgba(255,255,255,0.1)", flexShrink: 0 }} />
+            <div style={{ flex: 1, textAlign: "left" }}>
+              <div style={{ color: "#fff", fontSize: 15, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 4 }}>{slot.selected.title}</div>
+              <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 400 }}>{slot.selected.artist}</div>
             </div>
           </div>
           {slot.selected.preview && <audio controls src={slot.selected.preview} style={{ width: "100%" }} />}
           <button onClick={() => onSelect(slot.index, null)}
-            style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.5)", borderRadius: 0, fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", padding: "7px 0", cursor: "pointer", width: "100%" }}>
+            style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", color: "rgba(255,255,255,0.5)", borderRadius: 0, fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", padding: "7px 0", cursor: "pointer", width: "100%" }}>
             Change
           </button>
         </div>
@@ -1195,7 +1195,7 @@ export default function App() {
               <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>Card Name</div>
               <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
                 placeholder="Card Name" maxLength={20}
-                style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, padding: "11px 14px", width: "100%", boxSizing: "border-box", outline: "none", marginBottom: 14 }} />
+                style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", borderRadius: 0, color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, padding: "11px 14px", width: "100%", boxSizing: "border-box", outline: "none", marginBottom: 14 }} />
               <ShareCard slots={slots} userName={userName} />
             </div>
 
@@ -1216,7 +1216,7 @@ export default function App() {
         {/* Legacy.wav footer */}
         <div style={{ background: "#000", padding: "20px 24px", marginTop: 48, textAlign: "center" }}>
           <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#C3FF00", letterSpacing: "-0.01em" }}>Legacy.wav</div>
-          <div style={{ color: "rgba(255,255,255,0.25)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 4 }}>music-time-capsule.vercel.app</div>
+          <div style={{ color: "rgba(255,255,255,0.8)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 4 }}>music-time-capsule.vercel.app</div>
         </div>
       </div>
     </>
