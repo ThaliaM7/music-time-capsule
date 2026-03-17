@@ -993,7 +993,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
   return (
     <div style={{ flex: 1, minWidth: 280, display: "flex", flexDirection: "column", gap: 12, background: "#111117", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 0, padding: 20 }}>
       {/* Era label */}
-      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.05em", marginBottom: 4 }}>{labelMap[slot.index]}</div>
+      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", marginBottom: 4 }}>{labelMap[slot.index]}</div>
 
       {/* Search input */}
       <input type="text" value={slot.query}
@@ -1031,7 +1031,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
       {/* Results */}
       {slot.results.length > 0 && !slot.selected && (
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <div style={{ fontSize: 10, color: "#555", fontFamily: "'Bricolage Grotesque', sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 4 }}>Pick a track</div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "#FFFFFF", fontFamily: "'Bricolage Grotesque', sans-serif", letterSpacing: "0.12em", textTransform: "Capitalize", marginBottom: 4 }}>Pick a track</div>
           {slot.results.map((song) => (
             <div key={song.id} onClick={() => onSelect(slot.index, song)}
               style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.04)", borderRadius: 0, padding: "7px 10px", cursor: "pointer", border: "1px solid rgba(255,255,255,0.06)" }}
