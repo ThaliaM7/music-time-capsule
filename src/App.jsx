@@ -339,7 +339,7 @@ function ShareCard({ slots, userName, theme }) {
 // ── Vinyl Card ────────────────────────────────────────────────────────────────
 function VinylCapsuleCard({ slots, onShare, shared = false }) {
   const [copied, setCopied] = useState(false);
-  const accentMap = { 0: "#c084fc", 1: "#67e8f9", 2: "#86efac" };
+  const accentMap = { 0: "#C3FF00", 1: "#A237FF", 2: "#FFFFFF" };
 
   function handleShare() { onShare(); setCopied(true); setTimeout(() => setCopied(false), 2000); }
 
@@ -927,10 +927,10 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
 
       {/* ── Mixing Settings / Transition pickers ── */}
       <div style={{ marginBottom: 28, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 24 }}>Mixing Settings</div>
+        <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 24 }}>Mixing Settings</div>
         {[0, 1].map((handoff) => (
           <div key={handoff} style={{ marginBottom: handoff === 0 ? 20 : 0 }}>
-            <div style={{ color: "rgb(255, 255, 255)", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: 8, textAlign: "left"}}>
+            <div style={{ color: "rgba(255, 255, 255, 0.8)", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: 8, textAlign: "left"}}>
               Track {handoff + 1} → Track {handoff + 2}
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -955,22 +955,22 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
           const isActive = currentEra === slot.index && playing;
           return (
             <div key={slot.index} style={{ background: "#111117", border: `1px solid ${isActive ? accent : "rgba(255,255,255,0.06)"}`, padding: 20, transition: "border-color 0.4s" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <img src={slot.selected.cover} alt="" style={{ width: 52, height: 52, objectFit: "cover", flexShrink: 0, border: `2px solid ${isActive ? accent : "transparent"}`, transition: "border-color 0.4s" }} />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 2 }}>{slot.selected.title}</div>
-                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{slot.selected.artist}</div>
-                  {isActive && (
-                    <div style={{ marginTop: 6, height: 2, background: "rgba(255,255,255,0.08)" }}>
-                      <div style={{ height: "100%", width: `${progress * 100}%`, background: LIME, transition: "width 0.1s linear" }} />
-                    </div>
-                  )}
+              <div style={{ textAlign: "center", marginBottom: 16 }}>
+                <div style={{ fontSize: 11, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+                  {labelMap[slot.index]}{isActive && <span style={{ color: LIME, marginLeft: 8 }}>● Now</span>}
                 </div>
-                {isActive && <div style={{ color: LIME, fontSize: 10, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, letterSpacing: "0.1em" }}>NOW</div>}
+                <img src={slot.selected.cover} alt="" style={{ width: 120, height: 120, objectFit: "cover", border: `2px solid ${isActive ? LIME : "rgba(255,255,255,0.8)"}`, display: "block", margin: "0 auto 12px", transition: "border-color 0.4s" }} />
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 4 }}>{slot.selected.title}</div>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: isActive ? 10 : 0 }}>{slot.selected.artist}</div>
+                {isActive && (
+                  <div style={{ height: 2, background: "rgba(255,255,255,0.08)", marginTop: 8 }}>
+                    <div style={{ height: "100%", width: `${progress * 100}%`, background: LIME, transition: "width 0.1s linear" }} />
+                  </div>
+                )}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                <Slider label="Duration" value={durations[slot.index]} min={5} max={30}
-                  onChange={(v) => setDurations((prev) => ({ ...prev, [slot.index]: v }))} color={accent} unit="s" />
+              <Slider label="Duration" value={durations[slot.index]} min={5} max={30}
+                  onChange={(v) => setDurations((prev) => ({ ...prev, [slot.index]: v }))} color="#C3FF00" unit="s" />
                 <Slider label="Volume" value={volumes[slot.index]} min={0} max={1}
                   onChange={(v) => onVolumeChange(slot.index, v)} color={LIME} unit="%" />
                 <Slider label="Speed" value={speeds[slot.index]} min={0.5} max={2}
@@ -1218,7 +1218,7 @@ export default function App() {
         )}
 
         {/* Legacy.wav footer */}
-        <div style={{ background: "#0d0d0d", padding: "32px 24px", marginTop: 48, textAlign: "center" }}>
+        <div style={{ background: "#0d0d0d", padding: "32px 24px", marginTop: 36, textAlign: "center" }}>
           <div style={{ display: "inline-block", background: "#C3FF00", padding: "10px 32px" }}>
             <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.01em" }}>Legacy.wav</div>
           </div>
