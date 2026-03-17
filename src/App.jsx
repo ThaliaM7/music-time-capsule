@@ -345,7 +345,7 @@ function VinylCapsuleCard({ slots, onShare, shared = false }) {
 
   return (
     <div style={{ textAlign: "center", margin: "0 auto 48px", maxWidth: 480 }}>
-      {!shared && <div style={{ fontSize: 11, fontFamily: "'Bricolage Grotesque', monospace", letterSpacing: "0.25em", color: "#555", marginBottom: 20, textTransform: "uppercase" }}>◈ Your Capsule</div>}
+      {!shared && <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', monospace", letterSpacing: "normal", color: "#FFFFFF", marginBottom: 20, textTransform: "Capitalize" }}>◈ Your Capsule</div>}
       <div style={{ position: "relative", width: 280, height: 280, margin: "0 auto 28px" }}>
         <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle, #1a1a2e 30%, #0d0d1a 60%, #111 100%)", border: "2px solid rgba(255,255,255,0.06)", animation: "spinSlow 12s linear infinite" }} />
         {[100, 115, 130, 145].map((r) => (
@@ -956,7 +956,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
           return (
             <div key={slot.index} style={{ background: "#111117", border: `1px solid ${isActive ? accent : "rgba(255,255,255,0.06)"}`, padding: 20, transition: "border-color 0.4s" }}>
               <div style={{ textAlign: "center", marginBottom: 16 }}>
-                <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 4 }}>
+                <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 4 }}>
                   {labelMap[slot.index]}{isActive && <span style={{ color: LIME, marginLeft: 8 }}>● Now</span>}
                 </div>
                 <img src={slot.selected.cover} alt="" style={{ width: 120, height: 120, objectFit: "cover", border: `2px solid ${isActive ? LIME : "rgba(255,255,255,0.8)"}`, display: "block", margin: "0 auto 12px", transition: "border-color 0.4s" }} />
