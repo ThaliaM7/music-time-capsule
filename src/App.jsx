@@ -1218,9 +1218,11 @@ export default function App() {
         )}
 
         {/* Legacy.wav footer */}
-        <div style={{ background: "#C3FF00", padding: "20px 24px", marginTop: 48, textAlign: "center" }}>
-          <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#000000", letterSpacing: "-0.01em" }}>Legacy.wav</div>
-          <div style={{ color: "rgba(255,255,255,0.8)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 4 }}>music-time-capsule.vercel.app</div>
+        <div style={{ background: "#0d0d0d", padding: "32px 24px", marginTop: 48, textAlign: "center" }}>
+          <div style={{ display: "inline-block", background: "#C3FF00", padding: "10px 32px" }}>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.01em" }}>Legacy.wav</div>
+          </div>
+          <div style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 12, marginTop: 12 }}>music-time-capsule.vercel.app</div>
         </div>
       </div>
     </>
