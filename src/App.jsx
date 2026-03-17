@@ -1038,9 +1038,9 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
               onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.09)"}
               onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}>
               <img src={song.cover} alt={song.album} style={{ width: 32, height: 32, objectFit: "cover", flexShrink: 0 }} />
-              <div style={{ overflow: "hidden", display: "flex", flexDirection: "column", gap: 1 }}>
-                <div style={{ color: "#fff", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.title}</div>
-                <div style={{ color: "#666", fontSize: 11, fontFamily: "'Bricolage Grotesque', sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.artist}</div>
+              <div style={{ overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2, textAlign: "left" }}>
+                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.title}</div>
+                <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.2 }}>{song.artist}</div>
               </div>
             </div>
           ))}
@@ -1133,14 +1133,14 @@ export default function App() {
 
         {/* ── Header ── */}
         <div style={{ padding: "32px 24px 0", maxWidth: 960, margin: "0 auto" }}>
-          <div style={{ fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "capitalize" }}>Remix Three Eras</div>
+          <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "capitalize" }}>Remix Three Eras</div>
           <div style={{ display: "inline-block", background: "#A237FF", padding: "8px 24px", marginBottom: 16, maxWidth: "fit-content" }}>
             <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(32px, 6vw, 56px)", fontWeight: 800, margin: 0, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
               Music Capsule
             </h1>
           </div>
           <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#fff", fontSize: 14, lineHeight: 1.6, maxWidth: 500, marginBottom: 24, margin: "0 auto 24px" }}>
-          Select 3 tracks and then Seal The Capsule to recieve a visualizer and download your mix.Search by artist, song, or genre - add a year to narrow it down.
+          Select 3 tracks and then Seal The Capsule to recieve a visualizer and download your mix. Search by artist, song, or genre - add a year to narrow it down.
           </p>
 
           {/* Hero image */}
