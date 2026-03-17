@@ -1173,7 +1173,7 @@ export default function App() {
 
         {/* ── Sealed section ── */}
         {sealed && (
-          <div style={{ padding: "32px 16px", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
+          <div style={{ padding: "64px 16px", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
 
             {/* Your Capsule — three cover grid */}
             <div style={{ marginBottom: 32 }}>
