@@ -956,7 +956,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
           return (
             <div key={slot.index} style={{ background: "#111117", border: `1px solid ${isActive ? accent : "rgba(255,255,255,0.06)"}`, padding: 20, transition: "border-color 0.4s" }}>
               <div style={{ textAlign: "center", marginBottom: 16 }}>
-                <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 8 }}>
+                <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 16 }}>
                   {labelMap[slot.index]}{isActive && <span style={{ color: LIME, marginLeft: 8 }}>● Now</span>}
                 </div>
                 <img src={slot.selected.cover} alt="" style={{ width: 120, height: 120, objectFit: "cover", border: `2px solid ${isActive ? LIME : "rgba(255,255,255,0.8)"}`, display: "block", margin: "0 auto 12px", transition: "border-color 0.4s" }} />
