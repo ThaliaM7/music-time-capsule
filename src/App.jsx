@@ -926,7 +926,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
       </div>
 
       {/* ── Mixing Settings / Transition pickers ── */}
-      <div style={{ marginBottom: 28, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ marginBottom: 28, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)", maxWidth: "100%", boxSizing: "border-box" }}>
         <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 24 }}>Mixing Settings</div>
         {[0, 1].map((handoff) => (
           <div key={handoff} style={{ marginBottom: handoff === 0 ? 20 : 0 }}>
@@ -949,7 +949,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
       </div>
 
       {/* ── Era panels ── */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: "100%", boxSizing: "border-box" }}>
         {slots.map((slot) => {
           const accent = accentMap[slot.index];
           const isActive = currentEra === slot.index && playing;
@@ -1133,7 +1133,7 @@ export default function App() {
       <div style={{ minHeight: "100vh", background: "#0d0d0d", color: "#fff", boxSizing: "border-box" }}>
 
         {/* ── Header ── */}
-        <div style={{ padding: "32px 24px 0", maxWidth: 960, margin: "0 auto" }}>
+        <div style={{ padding: "32px 16px 0", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
           <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", letterSpacing: "0.08em", marginBottom: 8, textTransform: "capitalize" }}>Remix Three Eras</div>
           <div style={{ display: "inline-block", background: "#A237FF", padding: "8px 24px", marginBottom: 16, maxWidth: "fit-content" }}>
             <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(32px, 6vw, 56px)", fontWeight: 800, margin: 0, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
@@ -1155,7 +1155,7 @@ export default function App() {
         </div>
 
         {/* ── Search columns ── */}
-        <div style={{ padding: "0 24px", maxWidth: 960, margin: "0 auto" }}>
+        <div style={{ padding: "0 16px", maxWidth: 960, margin: "0 auto", boxSizing: "border-box" }}>
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
             {slots.map((slot) => (
               <Column key={slot.index} slot={slot} onSelect={handleSelect} onYearChange={handleYearChange} onSearch={handleSearch} />
@@ -1178,9 +1178,9 @@ export default function App() {
             {/* Your Capsule — three cover grid */}
             <div style={{ marginBottom: 32 }}>
               <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 16 }}>Your Capsule</div>
-              <div style={{ display: "flex", gap: 12 }}>
+              <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8, WebkitOverflowScrolling: "touch" }}>
                 {slots.map((slot, i) => (
-                  <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+                  <div key={i} style={{ flex: "0 0 200px", display: "flex", flexDirection: "column", gap: 16 }}>
                     <img src={slot.selected?.cover} alt="" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", border: "1px solid rgba(255,255,255,0.8)", display: "block" }} />
                     <div>
                       <div style={{ color: "#fff", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 24, fontWeight: 800, lineHeight: 1.2, marginBottom: 2, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{slot.selected?.title}</div>
@@ -1192,7 +1192,7 @@ export default function App() {
             </div>
 
             {/* Card name input + theme + download */}
-            <div style={{ marginBottom: 32, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ marginBottom: 32, background: "#111117", padding: 20, border: "1px solid rgba(255,255,255,0.06)", maxWidth: "100%", boxSizing: "border-box" }}>
               <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 16, fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 12 }}>Card Name</div>
               <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
                 placeholder="Card Name" maxLength={20}
