@@ -1007,7 +1007,7 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
           const selected = slot.query === chip.query;
           return (
             <div key={chip.query} onClick={() => onYearChange(slot.index, slot.year, chip.query)}
-              style={{ background: selected ? PURPLE : "transparent", border: `1.5px solid ${selected ? PURPLE : "rgba(255,255,255,0.8)"}`, padding: "4px 10px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: selected ? 700 : 400, color: selected ? "#fff" : "rgba(255,255,255,0.6)", cursor: "pointer", transition: "all 0.15s" }}>
+              style={{ background: selected ? PURPLE : "transparent", border: `1px solid ${selected ? PURPLE : "rgba(255,255,255,0.8)"}`, padding: "4px 10px", fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: selected ? 700 : 400, color: selected ? "#fff" : "rgba(255, 255, 255, 0.8)", cursor: "pointer", transition: "all 0.15s" }}>
               {chip.label}
             </div>
           );
@@ -1054,13 +1054,13 @@ function Column({ slot, onSelect, onYearChange, onSearch }) {
             <img src={slot.selected.cover} alt={slot.selected.album}
               style={{ width: 80, height: 80, objectFit: "cover", border: "2px solid rgba(255,255,255,0.1)", flexShrink: 0 }} />
             <div style={{ flex: 1, textAlign: "left" }}>
-              <div style={{ color: "#fff", fontSize: 15, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 4 }}>{slot.selected.title}</div>
-              <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 400 }}>{slot.selected.artist}</div>
+              <div style={{ color: "#fff", fontSize: 20, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, lineHeight: 1.2, marginBottom: 4 }}>{slot.selected.title}</div>
+              <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 400 }}>{slot.selected.artist}</div>
             </div>
           </div>
           {slot.selected.preview && <audio controls src={slot.selected.preview} style={{ width: "100%" }} />}
           <button onClick={() => onSelect(slot.index, null)}
-            style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", color: "rgba(255,255,255,0.5)", borderRadius: 0, fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", padding: "7px 0", cursor: "pointer", width: "100%" }}>
+            style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", color: "rgba(255,255,255,0.8)", borderRadius: 0, fontSize: 12, fontFamily: "'Bricolage Grotesque', sans-serif", padding: "7px 0", cursor: "pointer", width: "100%" }}>
             Change
           </button>
         </div>
