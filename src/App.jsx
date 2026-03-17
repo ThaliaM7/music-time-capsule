@@ -900,7 +900,7 @@ function CrossfadeMixer({ slots, volumes, speeds, onVolumeChange, onSpeedChange 
     <div>
       {/* ── Play + Export ── */}
       <div style={{ textAlign: "center", marginBottom: 48 }}>
-        <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 12 }}>Crossfade Mixer</div>
+        <div style={{ fontSize: 16, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, color: "rgb(255, 255, 255)", letterSpacing: "normal", textTransform: "capitalize", marginBottom: 8 }}>Crossfade Mixer</div>
         <div style={{ fontSize: 14, fontFamily: "'Bricolage Grotesque', sans-serif", color: "rgb(255, 255, 255)", marginBottom: 36 }}>
           Press play to listen or customize your mix using the settings below.
         </div>
@@ -1081,6 +1081,7 @@ export default function App() {
   const [volumes, setVolumes] = useState({ 0: 0.8, 1: 0.8, 2: 0.8 });
   const [speeds, setSpeeds] = useState({ 0: 1, 1: 1, 2: 1 });
   const [userName, setUserName] = useState("");
+  const [shareCopied, setShareCopied] = useState(false);
   const allSelected = slots.every((s) => s.selected !== null);
 
   if (sharedCapsule) return <ReceiverView slots={sharedCapsule} />;
@@ -1201,8 +1202,9 @@ export default function App() {
 
             {/* Share link */}
             <div style={{ marginBottom: 32, textAlign: "center" }}>
-              <button onClick={handleShare} style={{ background: "transparent", border: "1.5px solid rgba(255,255,255,0.8)", color: "#fff", borderRadius: 0, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, fontWeight: 600, padding: "14px 40px", cursor: "pointer", letterSpacing: "0.02em", transition: "all 0.2s" }}>
-                Share Capsule
+              <button onClick={() => { handleShare(); setShareCopied(true); setTimeout(() => setShareCopied(false), 2000); }}
+                style={{ background: shareCopied ? "rgba(195,255,0,0.1)" : "transparent", border: `1.5px solid ${shareCopied ? "#C3FF00" : "rgba(255,255,255,0.8)"}`, color: shareCopied ? "#C3FF00" : "#fff", borderRadius: 0, fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: 15, fontWeight: 600, padding: "14px 40px", cursor: "pointer", letterSpacing: "0.02em", transition: "all 0.2s" }}>
+                {shareCopied ? "✓ Link copied!" : "Share Capsule"}
               </button>
             </div>
 
